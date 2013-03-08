@@ -1,0 +1,7 @@
+content   apn               chrome/content/
+locale    apn  zh-CN        chrome/locale/zh-CN/
+skin      apn  classic/1.0  chrome/skin/
+
+overlay chrome://browser/content/browser.xul          chrome://apn/content/overlay.xul
+style	chrome://browser/content/browser.xul	      chrome://apn/skin/overlay.css
+style   chrome://global/content/customizeToolbar.xul  chrome://apn/skin/overlay.css

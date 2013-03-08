@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://apn/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://apn/locale/overlay.dtd">
+<overlay id="moz-cn-apn-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script src="chrome://apn/content/overlay.js"/>
+  <script src="chrome://apn/content/monitor.js"/>
+  
+   <stringbundleset id="stringbundleset">
+   		<stringbundle id="string-bundle" src="chrome://apn/locale/overlay.properties"/>
+   </stringbundleset>
+
+	<toolbarpalette id="BrowserToolbarPalette">
+		<toolbarbutton id="moz_cn_apn" class="toolbarbutton-1" tooltiptext="&apn.title;" label="&apn.title;" oncommand="MozCnApn.handle_event();" >
+		</toolbarbutton>
+	</toolbarpalette>
+
+	<popupset id="mainPopupSet">
+		<panel id="moz-cn-apn-popup"  type="arrow" >
+			<vbox id="moz-cn-apn-popup-main">
+				<hbox class="group">
+					<hbox>
+						<label class="group_title">&apn.title;</label>
+					</hbox>
+					<spacer flex="1" />
+					<hbox class="apn_close" onclick="MozCnApn.close_panel();"></hbox>
+				</hbox>
+				<hbox class="group">
+					<hbox>
+						<label control="moz-cn-apn-subject">&apn.subject;</label>
+					</hbox>
+					<textbox flex="1" id="moz-cn-apn-subject" class="apn_subject"></textbox>
+				</hbox>
+				<hbox class="group">
+					<vbox>
+						<hbox><label control="moz-cn-apn-message">&apn.message;</label></hbox>
+						<hbox id="moz-cn-apn-message-require" class="required" style="display:none;">
+								<label>&suggest.require;</label>
+						</hbox>
+					</vbox>
+					<textbox flex="1" id="moz-cn-apn-message" class="textarea" rows="3" multiline="true" ></textbox>
+				</hbox>
+				<hbox class="group">
+					<hbox><label control="moz-cn-apn-uri">&apn.uri;</label></hbox>
+					<vbox flex="1">
+						<textbox flex="1" id="moz-cn-apn-uri" class="apn_uri"></textbox>
+						<hbox class="uri-style">ex)http://www.dokdocorea.com, geo:37.24,131.86, tel:111-222-3333</hbox>
+					</vbox>
+				</hbox>
+				<hbox>
+					<spacer flex="1" />
+					<button id="moz-cn-apn-submit" oncommand="MozCnApn.submit();">&submit.button;</button>
+					<hbox id="moz-cn-apn-messp" style="display:none;"><vbox>&submit.process;</vbox></hbox>
+					<hbox id="moz-cn-apn-messf" style="display:none;">
+						<vbox>&submit.fail;</vbox>
+						<vbox class="message" onclick="MozCnApn.resubmit();">&submit.retry;</vbox>
+						<vbox class="message" onclick="MozCnApn.close_panel();">&submit.close;</vbox>
+					</hbox>
+					<hbox id="moz-cn-apn-messs" style="display:none;"><vbox>&submit.success;</vbox></hbox>
+					<spacer flex="1" />
+				</hbox>
+			</vbox>
+		</panel>
+
+		
+		<panel id="moz-cn-apn-login-popup"  type="arrow" >
+			<vbox id="moz-cn-apn-login-popup-main">
+				<hbox class="group">
+					<hbox>
+						<label class="group_title">&apn.login;</label>
+					</hbox>
+					<spacer flex="1" />
+					<hbox class="apn_close" onclick="MozCnApn.close_panel2();"></hbox>
+				</hbox>
+				<hbox class="group">
+					<vbox>
+						<hbox><label control="moz-cn-apn-user">&apn.user;</label></hbox>
+						<hbox id="moz-cn-apn-user-require" class="required" style="display:none;">
+								<label>&suggest.require;</label>
+						</hbox>
+					</vbox>
+					<textbox flex="1" id="moz-cn-apn-user" class="apn_user"></textbox>
+				</hbox>
+				<hbox class="group">
+					<vbox>
+						<hbox><label control="moz-cn-apn-password">&apn.password;</label></hbox>
+						<hbox id="moz-cn-apn-password-require" class="required" style="display:none;">
+								<label>&suggest.require;</label>
+						</hbox>
+					</vbox>
+					<textbox flex="1" id="moz-cn-apn-password" type="password" class="apn_password" ></textbox>
+				</hbox>
+				<hbox>
+					<spacer flex="1" />
+					<button id="moz-cn-apn-login-submit" oncommand="MozCnApn.login_submit();">&submit.button;</button>
+					<hbox id="moz-cn-apn-login-messp" style="display:none;"><vbox>&login_submit.process;</vbox></hbox>
+					<hbox id="moz-cn-apn-login-messf" style="display:none;">
+						<vbox><label id="moz-cn-apn-login-info" crop="center" value=""/></vbox>
+						<vbox class="message" onclick="MozCnApn.resubmit();">&submit.retry;</vbox>
+						<vbox class="message" onclick="MozCnApn.close_panel2();">&submit.close;</vbox>
+					</hbox>
+					<spacer flex="1" />
+				</hbox>
+			</vbox>
+		</panel>
+	</popupset>
+
+</overlay>
