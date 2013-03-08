@@ -12,7 +12,9 @@
 				/index.do=filenameController
 				/user.do=userController
 				/session.do=sessionController
-				/notification.do=notificationController		
+				/notification.do=notificationController	
+				/notificationFromWeb.do=notificationFromWebController
+				/login.do=loginFromAddonController
 			</value>
 		</property>
 		<property name="order" value="1" />
@@ -42,7 +44,17 @@
 		class="org.androidpn.server.console.controller.NotificationController">
 		<property name="methodNameResolver" ref="paramResolver" />
 	</bean>
-
+	
+	<bean id="notificationFromWebController"
+		class="org.androidpn.server.console.controller.NotificationFromWebController">
+		<property name="methodNameResolver" ref="paramResolver" />
+	</bean>
+	
+	<bean id="loginFromAddonController"
+		class="org.androidpn.server.console.controller.LoginFromAddonController">
+		<property name="methodNameResolver" ref="paramResolver" />
+	</bean>
+	
 	<bean id="paramResolver"
 		class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
 		<property name="paramName" value="action" />
