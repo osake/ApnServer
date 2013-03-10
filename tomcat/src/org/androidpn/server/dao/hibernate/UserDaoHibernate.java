@@ -74,6 +74,16 @@ public class UserDaoHibernate extends HibernateDaoSupport implements UserDao {
 			return (User) users.get(0);
 		}
 	}
+	
+	public User getUserByEmail(String email) {
+		List users = getHibernateTemplate().find("from User where email=?",
+				email);
+		if (users == null || users.isEmpty()) {
+			return null;
+		} else {
+			return (User) users.get(0);
+		}
+	}
 
 	// @SuppressWarnings("unchecked")
 	// public User findUserByUsername(String username) {

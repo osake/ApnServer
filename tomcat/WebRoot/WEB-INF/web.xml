@@ -54,6 +54,16 @@
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>GetUidService</servlet-name>
+		<servlet-class>org.androidpn.server.service.GetUidService</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GetUidService</servlet-name>
+		<url-pattern>/GetUidService</url-pattern>
+	</servlet-mapping>
 
 	<session-config>
 		<session-timeout>30</session-timeout>

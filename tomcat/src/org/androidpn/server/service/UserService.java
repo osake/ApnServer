@@ -38,6 +38,8 @@ public interface UserService {
     public User saveUser(User user) throws UserExistsException;
 
     public User getUserByUsername(String username) throws UserNotFoundException;
+    
+    public User getUserByEmail(String email);
 
     public void removeUser(Long userId);
 

@@ -43,5 +43,7 @@ public interface UserDao {
     public List<User> getUsersFromCreatedDate(Date createDate);
 
     public User getUserByUsername(String username) throws UserNotFoundException;
+    
+    public User getUserByEmail(String email);
 
 }

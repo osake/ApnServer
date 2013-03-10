@@ -25,6 +25,7 @@ import org.androidpn.server.service.ServiceLocator;
 import org.androidpn.server.service.UserExistsException;
 import org.androidpn.server.service.UserNotFoundException;
 import org.androidpn.server.service.UserService;
+import org.androidpn.server.util.MailUtil;
 import org.androidpn.server.xmpp.UnauthorizedException;
 import org.androidpn.server.xmpp.session.ClientSession;
 import org.androidpn.server.xmpp.session.Session;
@@ -102,6 +103,15 @@ public class IQRegisterHandler extends IQHandler {
                     String password = query.elementText("password");
                     String email = query.elementText("email");
                     String name = query.elementText("name");
+                    
+                    if(!validUser(email, password))
+                    {
+                        log.error("Email has been registed " + packet.getFrom());
+                        reply = IQ.createResultIQ(packet);
+                        reply.setChildElement(packet.getChildElement().createCopy());
+                        reply.setError(PacketError.Condition.conflict);
+                        return reply;
+                    }
 
                     // Verify the username
                     if (username != null) {
@@ -136,7 +146,7 @@ public class IQRegisterHandler extends IQHandler {
                     user.setEmail(email);
                     user.setName(name);
                     userService.saveUser(user);
-
+                    MailUtil.sendVerificationMail(user);
                     reply = IQ.createResultIQ(packet);
                 }
             } catch (Exception ex) {
@@ -172,5 +182,14 @@ public class IQRegisterHandler extends IQHandler {
     public String getNamespace() {
         return NAMESPACE;
     }
-
+    
+    private boolean validUser(String email, String password)
+    {
+		User user = userService.getUserByEmail(email);
+		if(user == null)
+		{
+			return true;
+		}
+		return false;
+    }
 }

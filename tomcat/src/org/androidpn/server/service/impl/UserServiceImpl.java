@@ -77,6 +77,10 @@ public class UserServiceImpl implements UserService {
     public User getUserByUsername(String username) throws UserNotFoundException {
         return (User) userDao.getUserByUsername(username);
     }
+    
+    public User getUserByEmail(String email) {
+        return (User) userDao.getUserByEmail(email);
+    }
 
     public void removeUser(Long userId) {
         log.debug("removing user: " + userId);
