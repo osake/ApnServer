@@ -1,0 +1,16 @@
+<resources>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in_register"><b>Sign in</b> or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="menu_forgot_password">Recover lost password</string>
+    <string name="login_progress_signing_in">登录中…&#8230;</string>
+    <string name="error_invalid_email">请输入正确的Email地址或手机号</string>
+    <string name="error_invalid_password">请输入六位以上密码</string>
+    <string name="error_incorrect_password">用户名或者密码错误</string>
+    <string name="error_field_required">请填写内容</string>
+    <string name="welcome_text">Welcome!</string>
+
+</resources>

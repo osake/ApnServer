@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="title_activity_signup">Sign in</string>
+	<string name="inconformity_password">两次输入的密码不一致，请检查</string>
+	<string name="duplicate_register">Email或者手机号已经被注册</string>
+	<string name="signup_password_hint">请输入六位以上密码</string>
+    <!-- Strings related to login -->
+
+</resources>
