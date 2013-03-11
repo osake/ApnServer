@@ -1,0 +1,63 @@
+<project name="ApnServer" default="war">
+	<property name="base.dir" value="." />
+	<property name="config.dir" value="./resources" />
+	<property name="lib.dir" value="./WebRoot/WEB-INF/lib" />
+	<property name="app_path" value="./webapps" />
+	<property name="web.root" value="./WebRoot" />
+	<property name="temp.dir" value="./temp" />
+	<property name="build.dir" value="./build" />
+	<property name="output.dir" value="./dist" />
+	<property name="webinif.dir" value="WEB-INF" />
+	<property name="src.dir" value="./src" />
+	<property name="web_classes.dir" value="${webinif.dir}/classes" />
+	<property name="origin.lib.dir" value="./lib" />
+	<path id="lib.class.path">
+   	<fileset dir="${lib.dir}">
+   		<include name="**/*.jar"/>
+   	</fileset>
+    </path>
+	<target name="clean">
+		<delete dir="${temp.dir}" />
+		<delete dir="${output.dir}" />
+	</target>
+
+	<target name="create dir" depends="clean">
+		<mkdir dir="${temp.dir}" />
+		<mkdir dir="${output.dir}" />
+	</target>
+
+	<target name="copy" depends="create dir">
+
+		<copy todir="${temp.dir}">
+			<fileset dir="${web.root}">
+				<exclude name="**/classes/**" />
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="compile" depends="copy">
+
+		<mkdir dir="${temp.dir}/${webinif.dir}/classes" />
+
+		<javac srcdir="${src.dir}" destdir="${temp.dir}/${webinif.dir}/classes" fork="yes" debug="on" deprecation="on">
+			<classpath refid="lib.class.path" />
+		</javac>
+
+		<!-- Copy config file for Gateway filter -->
+		
+		<copy todir="${temp.dir}/${webinif.dir}/classes/">
+			<fileset dir="${config.dir}">
+				<include name="**/**"/>
+			</fileset>
+		</copy>
+
+	
+	</target>
+
+	<target name="war" depends="compile">
+		<jar destfile="${output.dir}/ROOT.war" basedir="${temp.dir}" />
+		<delete dir="${temp.dir}"/> 
+	</target>
+</project>
+
