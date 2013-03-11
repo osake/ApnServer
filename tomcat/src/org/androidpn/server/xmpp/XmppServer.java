@@ -156,34 +156,6 @@ public class XmppServer {
         return standalone;
     }
 
-/*    private void locateServer() throws FileNotFoundException {
-    	Context context = new WebAppContext(contexts, homeDir + File.separator
-                + );
-        String baseDir = "F:/Java���/Ӧ�����/Tomcat 6.0/webapps/ROOT";
-        log.debug("base.dir=" + baseDir);
-
-        if (serverHomeDir == null) {
-            try {
-                File confDir = new File(baseDir, "conf");
-                if (confDir.exists()) {
-                    serverHomeDir = confDir.getParentFile().getCanonicalPath();
-                }
-            } catch (FileNotFoundException fe) {
-                // Ignore
-            } catch (IOException ie) {
-                // Ignore
-            }
-        }
-
-        if (serverHomeDir == null) {
-            System.err.println("Could not locate home.");
-            throw new FileNotFoundException();
-        } else {
-            Config.setProperty("server.home.dir", serverHomeDir);
-            log.debug("server.home.dir=" + serverHomeDir);
-        }
-    }*/
-
     private void shutdownServer() {
         shuttingDown = true;
         // Close all connections
