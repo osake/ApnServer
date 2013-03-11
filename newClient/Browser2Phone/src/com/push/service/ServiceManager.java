@@ -32,7 +32,6 @@ import android.util.Log;
 /** 
  * This class is to manage the notificatin service and to load the configuration.
  *
- * @author Sehwan Noh (devnoh@gmail.com)
  */
 public final class ServiceManager {
 
@@ -75,7 +74,7 @@ public final class ServiceManager {
 
         props = loadProperties();
         apiKey = props.getProperty("apiKey", "");
-        xmppHost = props.getProperty("xmppHost", "telenav-90307.tnsoftware.telenav.com");
+        xmppHost = props.getProperty("xmppHost", "42.96.141.125");
         xmppPort = props.getProperty("xmppPort", "5222");
         Log.i(LOGTAG, "apiKey=" + apiKey);
         Log.i(LOGTAG, "xmppHost=" + xmppHost);

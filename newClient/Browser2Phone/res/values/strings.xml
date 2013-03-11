@@ -12,5 +12,5 @@
     <string name="repassword_hint">请再输入一次</string>
     <string name="login_register_link">没有帐号？ <a href="#">注册</a></string>
     <string name="notification_settings">设置</string>
-    <string name="hello">欢迎使用云中锦书Beta测试版，请用电脑访问 http://42.96.141.125:8080/下载对应浏览器插件。如有使用上的问题或者发现bug，请发email到cloudpush@sina.cn</string>
+    <string name="hello">欢迎使用云中锦书Beta测试版，请登录您的注册邮箱，点击里面的链接下载浏览器端插件。如有使用上的问题或者发现bug，请发email到cloudpush@yeah.net</string>
 </resources>
