@@ -288,7 +288,7 @@ public class NotificationService extends Service {
             	{
             		connection.disconnect();
             	}
-            	LoginManager.getInstance(NotificationService.this).login();
+            	//LoginManager.getInstance(NotificationService.this).login();
             }
 
         });

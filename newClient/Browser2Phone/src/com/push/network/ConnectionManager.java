@@ -83,7 +83,7 @@ public class ConnectionManager implements java.io.Serializable {
 		Log.i(LOGTAG, "ConnectTask.run()...");
 
 		// Create the configuration for this new connection
-		String host = prefs.getString(Constants.XMPP_HOST, "");
+		String host = prefs.getString(Constants.XMPP_HOST, "42.96.141.125");
 		int port = prefs.getInt(Constants.XMPP_PORT, 5222);
 		ConnectionConfiguration connConfig = new ConnectionConfiguration(host, port);
 		connConfig.setSecurityMode(SecurityMode.disabled);

@@ -156,7 +156,7 @@ public class SignupActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!XMPPUtil.isValidEmailOrPhoneNumber(mEmail)) {
+		} else if (!XMPPUtil.isValidEmail(mEmail)) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
@@ -169,7 +169,7 @@ public class SignupActivity extends Activity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			mLoginStatusMessageView.setText(R.string.login_progress_signing_up);
 			showProgress(true);
 			mAuthTask = new UserSignUpTask();
 			mAuthTask.execute((Void) null);

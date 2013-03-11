@@ -49,6 +49,10 @@ public class LoginManager {
 			Log.d(LOGTAG, "password=" + password);
 
 			try {
+				if(!connection.isConnected())
+				{
+					connection.connect();
+				}
 				connection.login(username, password, "AndroidpnClient");
 				Log.d(LOGTAG, "Loggedn in successfully");
 				connection.addConnectionListener(new PersistentConnectionListener(notification));

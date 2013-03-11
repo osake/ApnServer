@@ -174,7 +174,7 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!XMPPUtil.isValidEmailOrPhoneNumber(mEmail)) {
+		} else if (!XMPPUtil.isValidEmail(mEmail)) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
