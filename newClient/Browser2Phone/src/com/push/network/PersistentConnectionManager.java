@@ -23,6 +23,7 @@ public class PersistentConnectionManager extends Thread
             while (!isInterrupted()) {
                 Log.d(LOGTAG, "Trying to reconnect in " + waiting() + " seconds");
                 Thread.sleep((long) waiting() * 1000L);
+                notification.disConnect();
                 notification.login();
                 waiting++;
             }
