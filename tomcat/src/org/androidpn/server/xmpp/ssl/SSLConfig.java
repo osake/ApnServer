@@ -44,19 +44,19 @@ public class SSLConfig {
 
     private static SSLContext sslContext;
 
-    private static String storeType;
+    private static String storeType = new String();
 
     private static KeyStore keyStore;
 
-    private static String keyStoreLocation;
+    private static String keyStoreLocation = new String();
 
-    private static String keyPass;
+    private static String keyPass = new String();
 
     private static KeyStore trustStore;
 
-    private static String trustStoreLocation;
+    private static String trustStoreLocation = new String();
 
-    private static String trustPass;
+    private static String trustPass = new String();
     
     private static URL classPath;
 
@@ -64,22 +64,21 @@ public class SSLConfig {
     }
 
     static {
-        storeType = Config.getString("xmpp.ssl.storeType", "JKS");
-        keyStoreLocation = Config.getString("xmpp.ssl.keystore", "conf"
-                + File.separator + "security" + File.separator + "keystore");
-        keyStoreLocation = classPath.getPath() + File.separator
-                + keyStoreLocation;
-        keyPass = Config.getString("xmpp.ssl.keypass", "changeit");
-        trustStoreLocation = Config.getString("xmpp.ssl.truststore", "conf"
-                + File.separator + "security" + File.separator + "truststore");
-        trustStoreLocation = classPath.getPath()
-                + File.separator + trustStoreLocation;
-        trustPass = Config.getString("xmpp.ssl.trustpass", "changeit");
-        
-        classPath = SSLConfig.class.getResource("/");
-
-        log.debug("keyStoreLocation=" + keyStoreLocation);
-        log.debug("trustStoreLocation=" + trustStoreLocation);
+      		classPath = Thread.currentThread().getContextClassLoader().getResource("/");
+            storeType = Config.getString("xmpp.ssl.storeType", "JKS");
+            keyStoreLocation = Config.getString("xmpp.ssl.keystore", "conf"
+                    + File.separator + "security" + File.separator + "keystore");
+            keyStoreLocation = classPath.getPath() + File.separator
+                    + keyStoreLocation;
+            keyPass = Config.getString("xmpp.ssl.keypass", "changeit");
+            trustStoreLocation = Config.getString("xmpp.ssl.truststore", "conf"
+                    + File.separator + "security" + File.separator + "truststore");
+            trustStoreLocation = classPath.getPath()
+                    + File.separator + trustStoreLocation;
+            trustPass = Config.getString("xmpp.ssl.trustpass", "changeit");
+            
+            log.debug("keyStoreLocation=" + keyStoreLocation);
+            log.debug("trustStoreLocation=" + trustStoreLocation);
 
         // Load keystore
         try {

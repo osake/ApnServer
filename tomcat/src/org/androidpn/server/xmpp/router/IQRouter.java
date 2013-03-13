@@ -123,7 +123,7 @@ public class IQRouter {
     }
 
     /**
-     * Senda the error packet to the original sender
+     * Send the error packet to the original sender
      */
     private void sendErrorPacket(IQ originalPacket,
             PacketError.Condition condition) {

@@ -15,6 +15,7 @@
  */
 package com.push.listener;
 
+import org.androidpn.client.Constants;
 import org.androidpn.client.LogUtil;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.XMPPConnection;
@@ -23,6 +24,8 @@ import com.push.network.ConnectionManager;
 import com.push.network.PersistentConnectionManager;
 import com.push.service.NotificationService;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 /** 
@@ -35,14 +38,18 @@ public class PersistentConnectionListener implements ConnectionListener {
 
     private final XMPPConnection connection;
     private NotificationService notification;
+    private SharedPreferences prefs;
 
     public PersistentConnectionListener(NotificationService notification) {
         this.notification = notification;
         this.connection = ConnectionManager.getInstance(notification.getSharedPreferences()).getConnection();
+        this.prefs = notification.getSharedPreferences(Constants.SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE);
     }
 
     @Override
     public void connectionClosed() {
+    	prefs.edit().putBoolean("isLogin", false);
+    	prefs.edit().commit();
         Log.d(LOGTAG, "connectionClosed()...");
     }
 
@@ -69,6 +76,8 @@ public class PersistentConnectionListener implements ConnectionListener {
 
     @Override
     public void reconnectionSuccessful() {
+    	prefs.edit().putBoolean("isLogin", true);
+    	prefs.edit().commit();
         Log.d(LOGTAG, "reconnectionSuccessful()...");
     }
 
