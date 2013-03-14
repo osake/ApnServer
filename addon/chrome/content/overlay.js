@@ -24,23 +24,16 @@ var MozCnApn = {
 		},
 
 		show_success: function() {
-			this.reset_button();
-			window.setTimeout(function() {
-				MozCnApn.close_panel2();
-				MozCnApn.input_recover();
-			}, 2000);
-		},
-
-		reset_button: function() {
 			this.el("moz-cn-apn-login-messp").style.display = "none";
-			this.el("moz-cn-apn-login-messf").style.display = "none";
-			this.el("moz-cn-apn-login-submit").style.display = "block";
-			this.el("moz-cn-apn-user").reset();
-			this.el("moz-cn-apn-password").reset();
+			this.el("moz-cn-apn-login-submit").style.display = "none";
+			this.el("moz-cn-apn-login-messs").style.display = "block";
+			window.setTimeout(function() {
+				MozCnApn.close_panel();
+				MozCnApn.input_recover();
+			}, 1500);
 		},
 
-		close_panel2: function() {
-			this.reset_button();
+		close_panel: function() {
 			this.el("moz-cn-apn-user-require").style.display = "none";
 			this.el("moz-cn-apn-password-require").style.display = "none";
 			if (this.panel.state === "open" || this.panel.state === "showing") {
@@ -49,16 +42,15 @@ var MozCnApn = {
 		},
 
 		send_request:function() {
-			var username = this.el("moz-cn-apn-user").value;
+			var email = this.el("moz-cn-apn-user").value;
 			var password = this.el("moz-cn-apn-password").value;
-			var content = 'username=' + username + '&password=' + password;
+			var content = 'email=' + email + '&password=' + password;
 			var url = "http://42.96.141.125:8080/login.do?action=send";
 			var request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
 			var stringsBundle = document.getElementById("string-bundle");
 			request.onload = function(aEvent) {
 				if(this.responseText == "sucess"){
-					docCookies.setItem("apn_userId", username);
-					MozCnApn.send_request2();
+					docCookies.setItem("apn_userId", email);
 					MozCnApn.show_success();
 				}else {
 					MozCnApn.input_recover();
@@ -74,7 +66,7 @@ var MozCnApn = {
 						tag.setAttribute("value", error3String);
 					}
 					MozCnApn.el("moz-cn-apn-login-messp").style.display = "none";
-					MozCnApn.el("moz-cn-apn-login-messf").style.display = "block";	
+					MozCnApn.el("moz-cn-apn-login-messf").style.display = "block";
 				} 
 			};
 			request.onerror = function(aEvent) {
@@ -90,10 +82,9 @@ var MozCnApn = {
 			request.send(content);
 		},
 		
-		send_request2:function() {
-			var uri = gBrowser.contentDocument.location;
-			var content = 'title=' + '' + '&message=' + '' + '&uri=' + uri;
-			var url = "http://42.96.141.125:8080/notification.do?action=send";
+		send_request2:function(title, message, uri, email) {
+			var content = 'title=' + title + '&message=' + message + '&uri=' + uri + '&email=' + email;
+			var url = "http://42.96.141.125:8080/notificationFromWeb.do?action=send";
 			var request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
 			request.onload = function(aEvent) {
 				//do nothing
@@ -122,20 +113,23 @@ var MozCnApn = {
 			}else if(this.el("moz-cn-apn-password").value == ''){
 				this.el("moz-cn-apn-password-require").style.display = "block";
 			}else {
-				this.send_request();
 				this.input_disable();
 				this.el("moz-cn-apn-user-require").style.display = "none";
 				this.el("moz-cn-apn-password-require").style.display = "none";
 				this.el("moz-cn-apn-login-submit").style.display = "none";
 				this.el("moz-cn-apn-login-messp").style.display = "block";
+				this.send_request();
 			}
 		},
 		
 		handle_event:function(){
-			if(null != docCookies.getItem("apn_userId")){
-				if('' != docCookies.getItem("apn_userId")){
-					MozCnApn.send_request();
-				}
+			var login = docCookies.loginCheck();
+			if(login == 1){
+				var stringsBundle = document.getElementById("string-bundle");
+				var title = stringsBundle.getString('apn_send_url_title');
+				var email = docCookies.getItem("apn_userId");
+				var uri = gBrowser.contentDocument.location;
+				MozCnApn.send_request2(title, '', uri, email);
 			}else{
 				MozCnApn.show_panel();
 			}
@@ -151,9 +145,13 @@ var MozCnApn = {
 				this.el("moz-cn-apn-user-require").style.display = "none";
 				this.el("moz-cn-apn-password-require").style.display = "none";
 				this.el("moz-cn-apn-login-messf").style.display = "none";
-				this.el("moz-cn-apn-login-messf").style.display = "block";
+				this.el("moz-cn-apn-login-messp").style.display = "block";
 				this.send_request();
 			}
+		},
+		
+		exit:function() {
+			docCookies.removeItem("apn_userId");
 		}
 		
 		
@@ -197,5 +195,46 @@ var docCookies = {
 		    var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
 		    for (var nIdx = 0; nIdx < aKeys.length; nIdx++) { aKeys[nIdx] = unescape(aKeys[nIdx]); }
 		    return aKeys;
+		  },
+		  
+		  loginCheck: function(){
+			  if(null != docCookies.getItem("apn_userId")){
+				  if('' != docCookies.getItem("apn_userId")){
+					  return 1;
+				  }else{
+					  return 0;
+				  }
+			  }else{
+				  return 0;
+			  }
 		  }
+};
+
+var ApnClipper = {
+		
+		pushUrl: function() {
+			var login = docCookies.loginCheck();
+			if(login == 1){
+				var stringsBundle = document.getElementById("string-bundle");
+				var title = stringsBundle.getString('apn_send_url_title');
+				var email = docCookies.getItem("apn_userId");
+				var uri = gBrowser.contentDocument.location;
+				MozCnApn.send_request2(title, '', uri, email);
+			}else{
+				MozCnApn.show_panel();
+			}
+		},
+		
+		pushContent: function() {
+			var login = docCookies.loginCheck();
+			if(login == 1){
+				var stringsBundle = document.getElementById("string-bundle");
+				var title = stringsBundle.getString('apn_send_url_title');
+				var selection = gBrowser.contentDocument.getSelection();
+				var email = docCookies.getItem("apn_userId");
+				MozCnApn.send_request2(title, selection, '', email);
+			}else{
+				MozCnApn.show_panel();
+			}
+		}
 };

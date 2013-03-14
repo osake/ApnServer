@@ -36,10 +36,18 @@
 			}, false );
 			MozCnApn.panel.addEventListener("popuphidden", function(e) {
 				gBrowser.removeProgressListener(ApnListener);
-				document.getElementById("moz-cn-apn-user").reset();
-				document.getElementById("moz-cn-apn-password").reset();
+				reset_button();
 			}, false );
 		}
+	}
+	
+	function reset_button() {
+		document.getElementById("moz-cn-apn-login-messp").style.display = "none";
+		document.getElementById("moz-cn-apn-login-messf").style.display = "none";
+		document.getElementById("moz-cn-apn-login-messs").style.display = "none";
+		document.getElementById("moz-cn-apn-login-submit").style.display = "block";
+		document.getElementById("moz-cn-apn-user").reset();
+		document.getElementById("moz-cn-apn-password").reset();
 	}
 
 	function getApnPref() {

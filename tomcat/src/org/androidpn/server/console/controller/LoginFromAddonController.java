@@ -24,25 +24,20 @@ public class LoginFromAddonController extends MultiActionController {
 	public String send(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 		String results = "";
-        String username = ServletRequestUtils.getStringParameter(request,"username");
+        String email = ServletRequestUtils.getStringParameter(request,"email");
         String password = ServletRequestUtils.getStringParameter(request, "password");
-        try{
-        	User user = userService.getUserByUsername(username);
-        	if(null != user){
-        		String pass = user.getPassword();
-        		if(password.equals(pass)){
-        			//user exist
-        			results = "sucess";
-        		}else{
-        			//password is wrong
-        			results = "error1";
-        		}
+        User user = userService.getUserByEmail(email);
+        if(null != user){
+        	String pass = user.getPassword();
+        	if(password.equals(pass)){
+        		logger.debug("user is exist");
+        		results = "sucess";
         	}else{
-        		results = "error2";
+        		logger.debug("password is wrong");
+        		results = "error1";
         	}
-        	
-        }catch(UserNotFoundException e){
-        	//user is not found
+        }else{
+        	logger.debug("can't find the user: " + email);
         	results = "error2";
         }
         

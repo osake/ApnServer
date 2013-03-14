@@ -9,10 +9,15 @@
 <!ENTITY submit.retry "重试">
 <!ENTITY submit.close "关闭">
 <!ENTITY submit.success "反馈提交成功！">
-<!ENTITY apn.user "用 户: ">
-<!ENTITY apn.login "请登录">
+<!ENTITY apn.user "邮 箱: ">
+<!ENTITY apn.login "您还未登录，请登录。">
+<!ENTITY apn.exit "退出登陆状态">
 <!ENTITY apn.password "密 码: ">
 <!ENTITY login_submit.process "提交中……">
+<!ENTITY login_submit.sucess "登陆成功">
 <!ENTITY login_submit.fail1 "密码和用户名不匹配">
 <!ENTITY login_submit.fail2 "无此用户，请到哇哇哇网站下载客户端并注册，谢谢">
 <!ENTITY login_submit.fail3 "提交失败，请检查网络是否可用">
+<!ENTITY apnwebclipper.name "信息推送">
+<!ENTITY apnclipper.menu.url "推送网页地址">
+<!ENTITY apnclipper.menu.selection "推送选定内容">

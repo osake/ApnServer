@@ -4,12 +4,12 @@
          xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
 	<Description about="urn:mozilla:install-manifest">
-		<em:id>dafenxi4552@163.com</em:id>
-		<em:version>0.6.21</em:version>
-		<em:name>content push</em:name>
-		<em:description>Push message to you phone form browser</em:description>
-		<em:creator>@Apn</em:creator>
-    	<em:developer>@WenLiang</em:developer>
+		<em:id>cloudpush@yeah.net</em:id>
+		<em:version>1.0.0</em:version>
+		<em:name>cloud push</em:name>
+		<em:description>Click a toolbar icon and contextmenus to push information easily to your phone</em:description>
+		<em:creator>cloudpush@yeah.net</em:creator>
+    	<em:developer>cloudpush@yeah.net</em:developer>
 		<em:homepageURL>http://www.firefox.com.cn/</em:homepageURL>
 		<em:iconURL>chrome://apn/skin/48x48.png</em:iconURL>
 		<em:type>2</em:type>
@@ -24,10 +24,9 @@
 		<em:localized>
 			<Description>
 				<em:locale>zh-CN</em:locale>
-				<em:name>content push</em:name>
-				<em:description>Push message to you phone form browser</em:description>
-				<em:creator>@Wen</em:creator>
-				<em:homepageURL>http://www.firefox.com.cn/</em:homepageURL>
+				<em:name>信息推送</em:name>
+				<em:description>点击工具栏或者右键，轻松推送信息到你的手机</em:description>
+				<em:creator>@信息推送</em:creator>
 			</Description>
 		</em:localized>
 				

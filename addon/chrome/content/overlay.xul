@@ -11,58 +11,19 @@
    </stringbundleset>
 
 	<toolbarpalette id="BrowserToolbarPalette">
-		<toolbarbutton id="moz_cn_apn" class="toolbarbutton-1" tooltiptext="&apn.title;" label="&apn.title;" oncommand="MozCnApn.handle_event();" >
+		<toolbarbutton id="moz_cn_apn" 
+			type="menu-button" 
+			class="toolbarbutton-1" 
+			tooltiptext="&apn.title;" 
+			label="&apn.title;" 
+			oncommand="MozCnApn.handle_event();" >
+			<menupopup id="moz_cn_apn_extend" position="after_end">
+				<menuitem id="moz_cn_apn_exit" label="&apn.exit;" oncommand="MozCnApn.exit();"/>
+			</menupopup>
 		</toolbarbutton>
 	</toolbarpalette>
 
 	<popupset id="mainPopupSet">
-		<panel id="moz-cn-apn-popup"  type="arrow" >
-			<vbox id="moz-cn-apn-popup-main">
-				<hbox class="group">
-					<hbox>
-						<label class="group_title">&apn.title;</label>
-					</hbox>
-					<spacer flex="1" />
-					<hbox class="apn_close" onclick="MozCnApn.close_panel();"></hbox>
-				</hbox>
-				<hbox class="group">
-					<hbox>
-						<label control="moz-cn-apn-subject">&apn.subject;</label>
-					</hbox>
-					<textbox flex="1" id="moz-cn-apn-subject" class="apn_subject"></textbox>
-				</hbox>
-				<hbox class="group">
-					<vbox>
-						<hbox><label control="moz-cn-apn-message">&apn.message;</label></hbox>
-						<hbox id="moz-cn-apn-message-require" class="required" style="display:none;">
-								<label>&suggest.require;</label>
-						</hbox>
-					</vbox>
-					<textbox flex="1" id="moz-cn-apn-message" class="textarea" rows="3" multiline="true" ></textbox>
-				</hbox>
-				<hbox class="group">
-					<hbox><label control="moz-cn-apn-uri">&apn.uri;</label></hbox>
-					<vbox flex="1">
-						<textbox flex="1" id="moz-cn-apn-uri" class="apn_uri"></textbox>
-						<hbox class="uri-style">ex)http://www.dokdocorea.com, geo:37.24,131.86, tel:111-222-3333</hbox>
-					</vbox>
-				</hbox>
-				<hbox>
-					<spacer flex="1" />
-					<button id="moz-cn-apn-submit" oncommand="MozCnApn.submit();">&submit.button;</button>
-					<hbox id="moz-cn-apn-messp" style="display:none;"><vbox>&submit.process;</vbox></hbox>
-					<hbox id="moz-cn-apn-messf" style="display:none;">
-						<vbox>&submit.fail;</vbox>
-						<vbox class="message" onclick="MozCnApn.resubmit();">&submit.retry;</vbox>
-						<vbox class="message" onclick="MozCnApn.close_panel();">&submit.close;</vbox>
-					</hbox>
-					<hbox id="moz-cn-apn-messs" style="display:none;"><vbox>&submit.success;</vbox></hbox>
-					<spacer flex="1" />
-				</hbox>
-			</vbox>
-		</panel>
-
-		
 		<panel id="moz-cn-apn-login-popup"  type="arrow" >
 			<vbox id="moz-cn-apn-login-popup-main">
 				<hbox class="group">
@@ -70,7 +31,7 @@
 						<label class="group_title">&apn.login;</label>
 					</hbox>
 					<spacer flex="1" />
-					<hbox class="apn_close" onclick="MozCnApn.close_panel2();"></hbox>
+					<hbox class="apn_close" onclick="MozCnApn.close_panel();"></hbox>
 				</hbox>
 				<hbox class="group">
 					<vbox>
@@ -93,16 +54,25 @@
 				<hbox>
 					<spacer flex="1" />
 					<button id="moz-cn-apn-login-submit" oncommand="MozCnApn.login_submit();">&submit.button;</button>
+					<hbox id="moz-cn-apn-login-messs" style="display:none;"><vbox>&login_submit.sucess;</vbox></hbox>
 					<hbox id="moz-cn-apn-login-messp" style="display:none;"><vbox>&login_submit.process;</vbox></hbox>
 					<hbox id="moz-cn-apn-login-messf" style="display:none;">
 						<vbox><label id="moz-cn-apn-login-info" crop="center" value=""/></vbox>
 						<vbox class="message" onclick="MozCnApn.resubmit();">&submit.retry;</vbox>
-						<vbox class="message" onclick="MozCnApn.close_panel2();">&submit.close;</vbox>
+						<vbox class="message" onclick="MozCnApn.close_panel();">&submit.close;</vbox>
 					</hbox>
 					<spacer flex="1" />
 				</hbox>
 			</vbox>
 		</panel>
 	</popupset>
-
+	
+	<!-- Context menu --> 
+  <popup id="contentAreaContextMenu">
+  	<menuitem id="apnclipper-contextmenu-selection" 
+  		label="&apnclipper.menu.selection;"
+  		image="chrome://apn/skin/16x16.png"
+      	class="menuitem-iconic"
+  		oncommand="ApnClipper.pushContent();"/>
+  </popup>
 </overlay>
