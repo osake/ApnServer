@@ -161,59 +161,72 @@ var MozCnApn = {
 };
 
 var docCookies = {
-		getItem: function (sKey) {
-			if (!sKey || !this.hasItem(sKey)) { return null; }
-		    return unescape(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
+		makeURI: function(str) {
+		    return Components.classes["@mozilla.org/network/io-service;1"]
+		                     .getService(Components.interfaces.nsIIOService)
+		                     .newURI(str, null, null);
 		},
 		
-		setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
-		    if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return; }
-		    var sExpires = "";
-		    if (vEnd) {
-		      switch (vEnd.constructor) {
-		        case Number:
-		          sExpires = vEnd === Infinity ? "; expires=Tue, 19 Jan 2038 03:14:07 GMT" : "; max-age=" + vEnd;
-		          break;
-		        case String:
-		          sExpires = "; expires=" + vEnd;
-		          break;
-		        case Date:
-		          sExpires = "; expires=" + vEnd.toGMTString();
-		          break;
-		      }
-		    }
-		    document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
-		  },
+		getItem: function (skey) {
+			Services.prefs.setIntPref("network.cookie.cookieBehavior", 0);
+		    var serv =   Components.classes["@mozilla.org/cookieService;1"]
+		                           .getService(Components.interfaces.nsICookieService);
+		    var uri = makeURI("http://apncloud.com/");
+			var cookie = serv.getCookieString(uri, null);
+			if (cookie != null && cookie != ""){
+				var CArray = cookie.split("=");
+				if(CArray[0] == skey){
+					return CArray[1];
+				}
+			}
+			return null;
+		},
+		
+		setItem: function (sKey, sValue) {
+			Services.prefs.setIntPref("network.cookie.cookieBehavior", 0);
+		    var serv =   Components.classes["@mozilla.org/cookieService;1"]
+		                           .getService(Components.interfaces.nsICookieService);
+		    var uri = makeURI("http://apncloud.com/");
+		    serv.setCookieString(uri, null, sKey+ "=" + sValue +"; path=/; domain=apncloud.com; expires=Sun, 31-Dec-2022 16:00:00 GMT;", null);
+		},
 		  
-		  removeItem: function (sKey, sPath) {
-		    if (!sKey || !this.hasItem(sKey)) { return; }
-		    document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sPath ? "; path=" + sPath : "");
-		  },
+		 removeItem: function (sKey) {
+			 var cookieManager = Components.classes["@mozilla.org/cookiemanager;1"]
+			 							   .getService(Components.interfaces.nsICookieManager);
+			 cookieManager.remove(".apncloud.com", sKey, "/", false);
+		 },
 		  
-		  hasItem: function (sKey) {
-		    return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
-		  },
-		  
-		  keys: /* optional method: you can safely remove it! */ function () {
-		    var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
-		    for (var nIdx = 0; nIdx < aKeys.length; nIdx++) { aKeys[nIdx] = unescape(aKeys[nIdx]); }
-		    return aKeys;
-		  },
-		  
-		  loginCheck: function(){
-			  if(null != docCookies.getItem("apn_userId")){
-				  if('' != docCookies.getItem("apn_userId")){
-					  return 1;
-				  }else{
-					  return 0;
-				  }
-			  }else{
+		 loginCheck: function(){
+			 if(null != docCookies.getItem("apn_userId")){
+				 if('' != docCookies.getItem("apn_userId")){
+					 return 1;
+				 }else{
 				  return 0;
-			  }
-		  }
+				 }
+			 }else{
+				  return 0;
+			 }
+		 }
 };
 
 var ApnClipper = {
+		
+		onLinkDDCheck: function(onLink, target){
+			if(onLink){
+				if(target.tagName.toLowerCase() != 'a'){
+                    target = target.parentNode;
+                    if(target.tagName.toLowerCase() != 'a'){
+                        return 0;
+                    }{
+                    	return 1;
+                    }
+                }{
+                	return 1;
+                }
+			}{
+				return 0;
+			}
+		},
 		
 		pushUrl: function() {
 			var login = docCookies.loginCheck();
@@ -230,12 +243,34 @@ var ApnClipper = {
 		
 		pushContent: function() {
 			var login = docCookies.loginCheck();
+			var stringsBundle = document.getElementById("string-bundle");
+			var title = stringsBundle.getString('apn_send_url_title');
+			var selection = "";
+			var uri = "";
+			var username = docCookies.getItem("apn_userId");
 			if(login == 1){
-				var stringsBundle = document.getElementById("string-bundle");
-				var title = stringsBundle.getString('apn_send_url_title');
-				var selection = gBrowser.contentDocument.getSelection();
-				var username = docCookies.getItem("apn_userId");
-				MozCnApn.send_request2(title, selection, '', username);
+				isContentSelected = gContextMenu.isContentSelected;
+	            onLink = gContextMenu.onLink;
+	            if( onLink && isContentSelected){
+	            	target = gContextMenu.target;
+	            	var flag = ApnClipper.onLinkDDCheck(onLink, target);
+	            	if(flag == 1){
+	            		uri = target.href;
+	            		selection = gBrowser.contentDocument.getSelection();
+	            	}else{
+	            		selection = gBrowser.contentDocument.getSelection();
+	            	}
+	            }else if(onLink){
+	            	target = gContextMenu.target;
+	            	var flag = ApnClipper.onLinkDDCheck(onLink, target);
+	            	if(flag == 1){
+	            		uri = target.href;
+	            		selection = target.title || target.text || target.href;
+	            	}
+	            }else if(isContentSelected){
+	            	selection = gBrowser.contentDocument.getSelection();
+	            }
+				MozCnApn.send_request2(title, selection, uri, username);
 			}else{
 				MozCnApn.show_panel();
 			}
