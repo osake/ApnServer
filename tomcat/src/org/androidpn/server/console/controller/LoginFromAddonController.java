@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.androidpn.server.model.User;
 import org.androidpn.server.service.ServiceLocator;
-import org.androidpn.server.service.UserNotFoundException;
 import org.androidpn.server.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,13 +30,13 @@ public class LoginFromAddonController extends MultiActionController {
         	String pass = user.getPassword();
         	if(password.equals(pass)){
         		logger.debug("user is exist");
-        		results = "sucess";
+        		results = "sucess/" + user.getUsername();
         	}else{
         		logger.debug("password is wrong");
         		results = "error1";
         	}
         }else{
-        	logger.debug("can't find the user: " + email);
+        	logger.debug("can't find the user with email: " + email);
         	results = "error2";
         }
         

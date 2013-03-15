@@ -49,8 +49,11 @@ var MozCnApn = {
 			var request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
 			var stringsBundle = document.getElementById("string-bundle");
 			request.onload = function(aEvent) {
-				if(this.responseText == "sucess"){
-					docCookies.setItem("apn_userId", email);
+				var array = this.responseText.split("/");
+				var returnFlag = array[0];
+				var username = array[1];
+				if(returnFlag == "sucess"){
+					docCookies.setItem("apn_userId", username);
 					MozCnApn.show_success();
 				}else {
 					MozCnApn.input_recover();
@@ -82,8 +85,8 @@ var MozCnApn = {
 			request.send(content);
 		},
 		
-		send_request2:function(title, message, uri, email) {
-			var content = 'title=' + title + '&message=' + message + '&uri=' + uri + '&email=' + email;
+		send_request2:function(title, message, uri, username) {
+			var content = 'title=' + title + '&message=' + message + '&uri=' + uri + '&username=' + username;
 			var url = "http://42.96.141.125:8080/notificationFromWeb.do?action=send";
 			var request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
 			request.onload = function(aEvent) {
@@ -127,9 +130,9 @@ var MozCnApn = {
 			if(login == 1){
 				var stringsBundle = document.getElementById("string-bundle");
 				var title = stringsBundle.getString('apn_send_url_title');
-				var email = docCookies.getItem("apn_userId");
+				var username = docCookies.getItem("apn_userId");
 				var uri = gBrowser.contentDocument.location;
-				MozCnApn.send_request2(title, '', uri, email);
+				MozCnApn.send_request2(title, '', uri, username);
 			}else{
 				MozCnApn.show_panel();
 			}
@@ -217,9 +220,9 @@ var ApnClipper = {
 			if(login == 1){
 				var stringsBundle = document.getElementById("string-bundle");
 				var title = stringsBundle.getString('apn_send_url_title');
-				var email = docCookies.getItem("apn_userId");
+				var username = docCookies.getItem("apn_userId");
 				var uri = gBrowser.contentDocument.location;
-				MozCnApn.send_request2(title, '', uri, email);
+				MozCnApn.send_request2(title, '', uri, username);
 			}else{
 				MozCnApn.show_panel();
 			}
@@ -231,8 +234,8 @@ var ApnClipper = {
 				var stringsBundle = document.getElementById("string-bundle");
 				var title = stringsBundle.getString('apn_send_url_title');
 				var selection = gBrowser.contentDocument.getSelection();
-				var email = docCookies.getItem("apn_userId");
-				MozCnApn.send_request2(title, selection, '', email);
+				var username = docCookies.getItem("apn_userId");
+				MozCnApn.send_request2(title, selection, '', username);
 			}else{
 				MozCnApn.show_panel();
 			}
