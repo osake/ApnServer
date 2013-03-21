@@ -67,8 +67,8 @@
 		</panel>
 	</popupset>
 	
-	<!-- Context menu --> 
-  <popup id="contentAreaContextMenu">
+	<!-- Context menu -->  
+    <popup id="contentAreaContextMenu">
   	<menuitem id="apnclipper-contextmenu-selection" 
   		label="&apnclipper.menu.selection;"
   		image="chrome://apn/skin/16x16.png"

@@ -44,7 +44,7 @@ var MozCnApn = {
 		send_request:function() {
 			var email = this.el("moz-cn-apn-user").value;
 			var password = this.el("moz-cn-apn-password").value;
-			var content = 'email=' + email + '&password=' + password;
+			var content = 'email=' + email + '&password=' + escape(password);
 			var url = "http://42.96.141.125:8080/login.do?action=send";
 			var request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
 			var stringsBundle = document.getElementById("string-bundle");
@@ -53,7 +53,6 @@ var MozCnApn = {
 				var returnFlag = array[0];
 				var username = array[1];
 				if(returnFlag == "sucess"){
-					docCookies.setItem("apn_userId", username);
 					MozCnApn.show_success();
 				}else {
 					MozCnApn.input_recover();
@@ -86,7 +85,7 @@ var MozCnApn = {
 		},
 		
 		send_request2:function(title, message, uri, username) {
-			var content = 'title=' + title + '&message=' + message + '&uri=' + uri + '&username=' + username;
+			var content = 'title=' + title + '&message=' + message + '&uri=' + escape(uri) + '&username=' + username;
 			var url = "http://42.96.141.125:8080/notificationFromWeb.do?action=send";
 			var request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
 			request.onload = function(aEvent) {
@@ -168,32 +167,32 @@ var docCookies = {
 		},
 		
 		getItem: function (skey) {
-			Services.prefs.setIntPref("network.cookie.cookieBehavior", 0);
-		    var serv =   Components.classes["@mozilla.org/cookieService;1"]
-		                           .getService(Components.interfaces.nsICookieService);
-		    var uri = makeURI("http://apncloud.com/");
-			var cookie = serv.getCookieString(uri, null);
-			if (cookie != null && cookie != ""){
-				var CArray = cookie.split("=");
-				if(CArray[0] == skey){
-					return CArray[1];
-				}
-			}
+		    var cookieManager =   Components.classes["@mozilla.org/cookiemanager;1"]
+		                           .getService(Components.interfaces.nsICookieManager2);
+		    var host = "42.96.141.125";
+			for (var e = cookieManager.getCookiesFromHost(host); e.hasMoreElements();) {
+				  var cookie = e.getNext().QueryInterface(Components.interfaces.nsICookie2);
+				  if (cookie != null && cookie != ""){
+					  if(cookie.name == skey){
+						  return cookie.value;
+					  }
+				  }
+			}	
 			return null;
 		},
 		
 		setItem: function (sKey, sValue) {
 			Services.prefs.setIntPref("network.cookie.cookieBehavior", 0);
-		    var serv =   Components.classes["@mozilla.org/cookieService;1"]
-		                           .getService(Components.interfaces.nsICookieService);
-		    var uri = makeURI("http://apncloud.com/");
-		    serv.setCookieString(uri, null, sKey+ "=" + sValue +"; path=/; domain=apncloud.com; expires=Sun, 31-Dec-2022 16:00:00 GMT;", null);
+		    var cookieManager =   Components.classes["@mozilla.org/cookiemanager;1"]
+		                           .getService(Components.interfaces.nsICookieManager2);
+		    var host = "42.96.141.125";
+		    cookieManager.add(host, "/", sKey, sValue, false, false, false, "Sun, 31-Dec-2022 16:00:00 GMT");
 		},
 		  
 		 removeItem: function (sKey) {
 			 var cookieManager = Components.classes["@mozilla.org/cookiemanager;1"]
 			 							   .getService(Components.interfaces.nsICookieManager);
-			 cookieManager.remove(".apncloud.com", sKey, "/", false);
+			 cookieManager.remove("42.96.141.125", sKey, "/", false);
 		 },
 		  
 		 loginCheck: function(){
