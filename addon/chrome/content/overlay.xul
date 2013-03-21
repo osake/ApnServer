@@ -66,13 +66,37 @@
 			</vbox>
 		</panel>
 	</popupset>
-	
-	<!-- Context menu -->  
-    <popup id="contentAreaContextMenu">
+  
+  <popup id="contentAreaContextMenu">
+    <menuseparator id="apnclipper-contextmenu-sep"/>
+    <menu id="apnclipper-contextmenu-duplicate"
+      label="&apnwebclipper.name;"
+      image="chrome://apn/skin/16x16.png"
+      class="menu-iconic"
+      insertbefore="devToolsEndSeparator">
+      <menupopup>
+        <menuitem id="apnclipper-contextmenu-duplicate-url"
+          label="&apnclipper.menu.url;"
+          oncommand="ApnClipper.pushUrl();" />
+        <menuitem id="apnclipper-contextmenu-duplicate-selection"
+          label="&apnclipper.menu.selection;"
+          oncommand="ApnClipper.pushSelection();" />
+      </menupopup>
+    </menu>
+    <menuitem id="apnclipper-contextmenu-locate" 
+  		label="&apnclipper.menu.locate;"
+  		image="chrome://apn/skin/16x16.png"
+      	class="menuitem-iconic"
+  		oncommand="ApnClipper.pushLocate();"/>
+  	<menuitem id="apnclipper-contextmenu-url" 
+  		label="&apnclipper.menu.url;"
+  		image="chrome://apn/skin/16x16.png"
+      	class="menuitem-iconic"
+  		oncommand="ApnClipper.pushUrl();"/>
   	<menuitem id="apnclipper-contextmenu-selection" 
   		label="&apnclipper.menu.selection;"
   		image="chrome://apn/skin/16x16.png"
       	class="menuitem-iconic"
-  		oncommand="ApnClipper.pushContent();"/>
+  		oncommand="ApnClipper.pushSelection();"/>
   </popup>
 </overlay>

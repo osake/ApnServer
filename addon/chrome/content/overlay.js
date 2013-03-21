@@ -227,7 +227,7 @@ var ApnClipper = {
 			}
 		},
 		
-		pushUrl: function() {
+		pushLocate: function() {
 			var login = docCookies.loginCheck();
 			if(login == 1){
 				var stringsBundle = document.getElementById("string-bundle");
@@ -240,36 +240,35 @@ var ApnClipper = {
 			}
 		},
 		
-		pushContent: function() {
+		pushUrl: function() {
 			var login = docCookies.loginCheck();
-			var stringsBundle = document.getElementById("string-bundle");
-			var title = stringsBundle.getString('apn_send_url_title');
-			var selection = "";
-			var uri = "";
-			var username = docCookies.getItem("apn_userId");
 			if(login == 1){
-				isContentSelected = gContextMenu.isContentSelected;
-	            onLink = gContextMenu.onLink;
-	            if( onLink && isContentSelected){
-	            	target = gContextMenu.target;
-	            	var flag = ApnClipper.onLinkDDCheck(onLink, target);
-	            	if(flag == 1){
-	            		uri = target.href;
-	            		selection = gBrowser.contentDocument.getSelection();
-	            	}else{
-	            		selection = gBrowser.contentDocument.getSelection();
-	            	}
-	            }else if(onLink){
-	            	target = gContextMenu.target;
-	            	var flag = ApnClipper.onLinkDDCheck(onLink, target);
-	            	if(flag == 1){
-	            		uri = target.href;
-	            		selection = target.title || target.text || target.href;
-	            	}
-	            }else if(isContentSelected){
-	            	selection = gBrowser.contentDocument.getSelection();
-	            }
+				var stringsBundle = document.getElementById("string-bundle");
+				var title = stringsBundle.getString('apn_send_url_title');
+				var username = docCookies.getItem("apn_userId");
+				var uri = "";
+				var selection = "";
+				onLink = gContextMenu.onLink;
+		        target = gContextMenu.target;
+		        var flag = ApnClipper.onLinkDDCheck(onLink, target);
+		        if(flag == 1){
+		        	uri = target.href;
+		            selection = target.title || target.text || target.href;
+		        }
 				MozCnApn.send_request2(title, selection, uri, username);
+			}else{
+				MozCnApn.show_panel();
+			}
+		},
+		
+		pushSelection: function() {
+			var login = docCookies.loginCheck();
+			if(login == 1){
+				var stringsBundle = document.getElementById("string-bundle");
+				var title = stringsBundle.getString('apn_send_url_title');
+				var username = docCookies.getItem("apn_userId");
+				var selection = gBrowser.contentDocument.getSelection();
+				MozCnApn.send_request2(title, selection, "", username);
 			}else{
 				MozCnApn.show_panel();
 			}

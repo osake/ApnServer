@@ -39,7 +39,23 @@
 				reset_button();
 			}, false );
 		}
+		
+		var contextMenu = document.getElementById("contentAreaContextMenu");
+		if (contextMenu){
+		   	contextMenu.addEventListener("popupshowing", initContextMenuShow, false);
+		}
 	}
+	
+	function initContextMenuShow(event) {
+		var show1 = document.getElementById("apnclipper-contextmenu-locate");
+		var show2 = document.getElementById("apnclipper-contextmenu-url");
+		var show3 = document.getElementById("apnclipper-contextmenu-selection");
+		var show4 = document.getElementById("apnclipper-contextmenu-duplicate");
+		show1.hidden = (gContextMenu.isContentSelected || gContextMenu.onLink);
+		show2.hidden = !(gContextMenu.onLink && !(gContextMenu.isContentSelected && gContextMenu.onLink));
+		show3.hidden = !(gContextMenu.isContentSelected &&  !(gContextMenu.isContentSelected && gContextMenu.onLink));
+		show4.hidden = !(gContextMenu.isContentSelected && gContextMenu.onLink);
+    }
 	
 	function reset_button() {
 		document.getElementById("moz-cn-apn-login-messp").style.display = "none";
