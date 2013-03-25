@@ -5,6 +5,7 @@
 		<pattern>/dwr/*</pattern>
 	</excludes>
 	<decorator name="default" page="default.jsp">
-		<pattern>/*</pattern>
+		<pattern>/*.jsp</pattern>
+		<pattern>/*.do</pattern>
 	</decorator>
 </decorators>

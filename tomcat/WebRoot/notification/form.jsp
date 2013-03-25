@@ -28,11 +28,11 @@
 </tr>
 <tr>
 	<td>Title:</td>
-	<td><input type="text" id="title" name="title" value="Dokdo Island" style="width:380px;" /></td>
+	<td><input type="text" id="title" name="title" value="" style="width:380px;" /></td>
 </tr>
 <tr>
 	<td>Message:</td>
-	<td><textarea id="message" name="message" style="width:380px; height:80px;" >Dokdo is a Korean island, the far east of the Korean territory. No doubt! No question! Don't mention it any more!</textarea></td>
+	<td><textarea id="message" name="message" style="width:380px; height:80px;" ></textarea></td>
 </tr>
 <%--
 <tr>
@@ -43,7 +43,7 @@
 <tr>
 	<td>URI:</td>
 	<td><input type="text" id="uri" name="uri" value="" style="width:380px;" />
-	    <br/><span style="font-size:0.8em">ex) http://www.dokdocorea.com, geo:37.24,131.86, tel:111-222-3333</span>
+	    <br/><span style="font-size:0.8em"></span>
 	</td>
 </tr>
 <tr>

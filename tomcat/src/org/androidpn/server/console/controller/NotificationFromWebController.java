@@ -3,6 +3,7 @@ package org.androidpn.server.console.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.androidpn.server.util.ApnUtil;
 import org.androidpn.server.util.Config;
 import org.androidpn.server.xmpp.push.NotificationManager;
 import org.apache.commons.logging.Log;
@@ -24,7 +25,7 @@ public class NotificationFromWebController extends MultiActionController {
 
         String title = ServletRequestUtils.getStringParameter(request, "title");
         String message = ServletRequestUtils.getStringParameter(request, "message");
-        String uri = ServletRequestUtils.getStringParameter(request, "uri");
+        String uri = ApnUtil.unescape(ServletRequestUtils.getStringParameter(request, "uri"));
         
         String username = ServletRequestUtils.getStringParameter(request, "username");
         logger.debug("user's name is: " + username);

@@ -59,10 +59,30 @@
 		<servlet-name>GetUidService</servlet-name>
 		<servlet-class>org.androidpn.server.service.GetUidService</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>GetBrowserPlugInService</servlet-name>
+		<servlet-class>org.androidpn.server.service.GetBrowserPlugInService</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>GetApk</servlet-name>
+		<servlet-class>org.androidpn.server.service.GetApk</servlet-class>
+	</servlet>	
 
 	<servlet-mapping>
 		<servlet-name>GetUidService</servlet-name>
 		<url-pattern>/GetUidService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>GetBrowserPlugInService</servlet-name>
+		<url-pattern>/getplugin</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>GetApk</servlet-name>
+		<url-pattern>/getapk</url-pattern>
 	</servlet-mapping>
 
 	<session-config>

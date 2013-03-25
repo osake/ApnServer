@@ -20,12 +20,7 @@
 			<ul id="tabmenu">
 				<li><a href="/index.do"
 					class="<c:if test="${topMenu eq 'home'}"><c:out value="current" /></c:if>">Home</a></li>
-				<li><a href="/user.do"
-					class="<c:if test="${topMenu eq 'user'}"><c:out value="current" /></c:if>">Users</a></li>
-				<li><a href="/session.do"
-					class="<c:if test="${topMenu eq 'session'}"><c:out value="current" /></c:if>">Sessions</a></li>
-				<li><a href="/notification.do"
-					class="<c:if test="${topMenu eq 'notification'}"><c:out value="current" /></c:if>">Notifications</a></li>
+			
 			</ul>
 			<div id="tabcontent">
 				<decorator:body/>			

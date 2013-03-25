@@ -1,11 +1,13 @@
 package org.androidpn.server.console.controller;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.androidpn.server.model.User;
 import org.androidpn.server.service.ServiceLocator;
 import org.androidpn.server.service.UserService;
+import org.androidpn.server.util.ApnUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -24,12 +26,12 @@ public class LoginFromAddonController extends MultiActionController {
             HttpServletResponse response) throws Exception {
 		String results = "";
         String email = ServletRequestUtils.getStringParameter(request,"email");
-        String password = ServletRequestUtils.getStringParameter(request, "password");
+        String password = ApnUtil.unescape(ServletRequestUtils.getStringParameter(request, "password"));
         User user = userService.getUserByEmail(email);
         if(null != user){
         	String pass = user.getPassword();
         	if(password.equals(pass)){
-        		logger.debug("user is exist");
+        		logger.debug("user exist");
         		results = "sucess/" + user.getUsername();
         	}else{
         		logger.debug("password is wrong");
@@ -38,6 +40,16 @@ public class LoginFromAddonController extends MultiActionController {
         }else{
         	logger.debug("can't find the user with email: " + email);
         	results = "error2";
+        }
+        
+        if (results.startsWith("sucess"))
+        {
+          this.logger.debug("adding cookie-----");
+          Cookie cookie = new Cookie("apn_userId", user.getUsername());
+          cookie.setPath("/");
+          cookie.setMaxAge(31536000);
+          response.addCookie(cookie);
+          this.logger.debug("done-----");
         }
         
         response.getWriter().write(results);
