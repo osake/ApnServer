@@ -1,9 +1,17 @@
 package com.push.ui;
 
+import org.androidpn.client.Constants;
+
 import com.push.browser2phone.R;
 import com.push.service.ServiceManager;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;

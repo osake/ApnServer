@@ -26,6 +26,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
+import com.push.browser2phone.R;
 
 /** 
  * Activity for displaying the notification setting view.
@@ -47,9 +48,9 @@ public class NotificationSettingsActivity extends PreferenceActivity {
         CheckBoxPreference notifyPref = (CheckBoxPreference) getPreferenceManager()
                 .findPreference(Constants.SETTINGS_NOTIFICATION_ENABLED);
         if (notifyPref.isChecked()) {
-            notifyPref.setTitle("Notifications Enabled");
+            notifyPref.setSummary(R.string.setting_push_on);
         } else {
-            notifyPref.setTitle("Notifications Disabled");
+            notifyPref.setSummary(R.string.setting_push_off);
         }
     }
 
@@ -69,9 +70,9 @@ public class NotificationSettingsActivity extends PreferenceActivity {
 
         CheckBoxPreference notifyPref = new CheckBoxPreference(this);
         notifyPref.setKey(Constants.SETTINGS_NOTIFICATION_ENABLED);
-        notifyPref.setTitle("Notifications Enabled");
-        notifyPref.setSummaryOn("Receive push messages");
-        notifyPref.setSummaryOff("Do not receive push messages");
+        notifyPref.setTitle(R.string.setting_push);
+        notifyPref.setSummaryOn(R.string.setting_push_on);
+        notifyPref.setSummaryOff(R.string.setting_push_off);
         notifyPref.setDefaultValue(Boolean.TRUE);
         notifyPref
                 .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -79,9 +80,9 @@ public class NotificationSettingsActivity extends PreferenceActivity {
                             Object newValue) {
                         boolean checked = Boolean.valueOf(newValue.toString());
                         if (checked) {
-                            preference.setTitle("Notifications Enabled");
+                            preference.setSummary(R.string.setting_push_on);
                         } else {
-                            preference.setTitle("Notifications Disabled");
+                            preference.setSummary(R.string.setting_push_off);
                         }
                         return true;
                     }
@@ -89,15 +90,15 @@ public class NotificationSettingsActivity extends PreferenceActivity {
 
         CheckBoxPreference soundPref = new CheckBoxPreference(this);
         soundPref.setKey(Constants.SETTINGS_SOUND_ENABLED);
-        soundPref.setTitle("Sound");
-        soundPref.setSummary("Play a sound for notifications");
+        soundPref.setTitle(R.string.setting_sound);
+        soundPref.setSummary(R.string.setting_playsound);
         soundPref.setDefaultValue(Boolean.TRUE);
         // soundPref.setDependency(Constants.SETTINGS_NOTIFICATION_ENABLED);
 
         CheckBoxPreference vibratePref = new CheckBoxPreference(this);
         vibratePref.setKey(Constants.SETTINGS_VIBRATE_ENABLED);
-        vibratePref.setTitle("Vibrate");
-        vibratePref.setSummary("Vibrate the phone for notifications");
+        vibratePref.setTitle(R.string.setting_Vibrate);
+        vibratePref.setSummary(R.string.setting_Vibrating);
         vibratePref.setDefaultValue(Boolean.TRUE);
         // vibratePref.setDependency(Constants.SETTINGS_NOTIFICATION_ENABLED);
 

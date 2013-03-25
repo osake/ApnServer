@@ -48,9 +48,8 @@ public class PersistentConnectionListener implements ConnectionListener {
 
     @Override
     public void connectionClosed() {
-    	prefs.edit().putBoolean("isLogin", false);
-    	prefs.edit().commit();
         Log.d(LOGTAG, "connectionClosed()...");
+        this.connectionClosedOnError(new Exception("unexpected closed!"));
     }
 
     @Override

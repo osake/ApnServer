@@ -14,6 +14,7 @@ import com.push.listener.PersistentConnectionListener;
 import com.push.service.NotificationService;
 
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 public class LoginManager {
@@ -25,7 +26,6 @@ public class LoginManager {
 
 	private LoginManager(NotificationService notification) 
 	{
-		connection = ConnectionManager.getInstance(notification.getSharedPreferences()).getConnection();
 		this.notification = notification;
 	}
 
@@ -41,28 +41,37 @@ public class LoginManager {
 		
 		String username = prefs.getString(Constants.XMPP_USERNAME, "");
 		String password = prefs.getString(Constants.XMPP_PASSWORD, "");
-
+		boolean isAuthenticated = isAuthenticated();
 		Log.i(LOGTAG, "LoginTask.run()...");
-
-		if (!isAuthenticated()) {
+		
+		
+		if (!isAuthenticated) {
+			connection = ConnectionManager.getInstance(notification.getSharedPreferences()).getConnection();
 			Log.d(LOGTAG, "username=" + username);
 			Log.d(LOGTAG, "password=" + password);
 
 			try {
-				if(!connection.isConnected())
+				if(connection == null || !connection.isConnected())
 				{
 					connection.connect();
 				}
 				connection.login(username, password, "AndroidpnClient");
+				prefs.edit().putBoolean("isLogin", true);
+				prefs.edit().commit();
 				Log.d(LOGTAG, "Loggedn in successfully");
-				connection.addConnectionListener(new PersistentConnectionListener(notification));
 				
-				// packet filter
-				PacketListener packetListener = new NotificationPacketListener(this.notification);
-				// packet listener
-				PacketFilter packetFilter = new PacketTypeFilter(NotificationIQ.class);
-				ConnectionManager.getInstance(notification.getSharedPreferences()).getConnection().addPacketListener(packetListener, packetFilter);
+				if(!isAuthenticated)
+				{
+					connection.addConnectionListener(new PersistentConnectionListener(notification));
+					
+					// packet filter
+					PacketListener packetListener = new NotificationPacketListener(this.notification);
+					// packet listener
+					PacketFilter packetFilter = new PacketTypeFilter(NotificationIQ.class);
+					ConnectionManager.getInstance(notification.getSharedPreferences()).getConnection().addPacketListener(packetListener, packetFilter);
 
+				}
+				
 			} catch (XMPPException e) {
 				Log.e(LOGTAG, "LoginTask.run()... xmpp error");
 				Log.e(LOGTAG,
@@ -70,21 +79,31 @@ public class LoginManager {
 								+ e.getMessage());
 				String INVALID_CREDENTIALS_ERROR_CODE = "401";
 				String errorMessage = e.getMessage();
+				Editor editor = prefs.edit();
+				editor.putBoolean("isLogin", false);
+				editor.commit();
 				if (errorMessage != null
 						&& errorMessage.contains(INVALID_CREDENTIALS_ERROR_CODE)) {
-					//RegistManager.getInstance(notification.getSharedPreferences()).regist();
 					return;
 				}
+				new PersistentConnectionManager(notification).start();
 
 			} catch (Exception e) {
 				Log.e(LOGTAG, "LoginTask.run()... other error");
 				Log.e(LOGTAG,
 						"Failed to login to xmpp server. Caused by: "
 								+ e.getMessage());
-				//xmppManager.startReconnectionThread();
+				Editor editor = prefs.edit();
+				editor.putBoolean("isLogin", false);
+				editor.commit();
+				connection.disconnect();
+				new PersistentConnectionManager(notification).start();
 			}
 
 		} else {
+			Editor editor = prefs.edit();
+			editor.putBoolean("isLogin", true);
+			editor.commit();
 			Log.i(LOGTAG, "Logged in already");
 			//xmppManager.runTask();
 		}

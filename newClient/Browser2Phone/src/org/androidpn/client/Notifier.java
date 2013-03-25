@@ -78,6 +78,10 @@ public class Notifier {
                 notification.defaults |= Notification.DEFAULT_VIBRATE;
             }
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
+            notification.ledOnMS = 1;
+            notification.ledOffMS = 0;
+            notification.ledARGB = 0xff00ff00;
+            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
             notification.when = System.currentTimeMillis();
             notification.tickerText = message;
 

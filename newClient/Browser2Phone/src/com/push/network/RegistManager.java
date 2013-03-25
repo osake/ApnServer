@@ -46,6 +46,7 @@ public class RegistManager {
 		final String username = prefs.getString(Constants.XMPP_USERNAME, "");
 		final String password = prefs.getString(Constants.XMPP_PASSWORD, "");
 		final String email = prefs.getString(Constants.XMPP_EMAIL, "");
+		//final String nickname = prefs.getString(Constants.XMPP_NICKNAME, "");
 		XMPPConnection connection = connectionManager.getConnection();
 		Log.i(LOGTAG, "RegisterTask.run()...");
 		if(connection.isConnected())
@@ -110,13 +111,13 @@ public class RegistManager {
 
 					}
 				};
-
 				connection.addPacketListener(packetListener, packetFilter);
 				
 				registration.setType(IQ.Type.SET);
 				registration.addAttribute("username", username);
 				registration.addAttribute("password", password);
 				registration.addAttribute("email", email);
+				//registration.addAttribute("name", nickname);
 				connection.sendPacket(registration);
 
 			} else {

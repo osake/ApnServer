@@ -57,6 +57,23 @@
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true" />
+    <!--         <TextView
+                android:id="@+id/login_nickname_input"
+                style="@style/normalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="5dp"
+                android:text="@string/login_label_nickname" />
+            
+            <EditText
+                android:id="@+id/nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/login_nickname_hint"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true" />-->
 			
             <!-- 密码 text -->
 

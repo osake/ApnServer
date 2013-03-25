@@ -50,11 +50,13 @@ public class SignupActivity extends Activity {
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
+	//private String mNickname;
 	private String mPassword;
 	private String mRePassword;
 
 	// UI references.
 	private EditText mEmailView;
+	//private EditText mNicknameView;
 	private EditText mPasswordView;
 	private EditText mRePasswordView;
 	private View mLoginFormView;
@@ -77,6 +79,8 @@ public class SignupActivity extends Activity {
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 
+		//mNicknameView = (EditText) findViewById(R.id.nickname);
+		
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mRePasswordView = (EditText) findViewById(R.id.repassword);
 		mPasswordView
@@ -129,6 +133,7 @@ public class SignupActivity extends Activity {
 
 		// Store values at the time of the login attempt.
 		mEmail = mEmailView.getText().toString();
+		//mNickname = mNicknameView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
 		mRePassword = mRePasswordView.getText().toString();
 
@@ -161,6 +166,13 @@ public class SignupActivity extends Activity {
 			focusView = mEmailView;
 			cancel = true;
 		}
+		
+//		if(!XMPPUtil.isValidNickname(mNickname))
+//		{
+//			mNicknameView.setError(getString(R.string.error_invalid_nickname));
+//			focusView = mNicknameView;
+//			cancel = true;
+//		}
 
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
@@ -236,6 +248,7 @@ public class SignupActivity extends Activity {
 			editor.putString(Constants.XMPP_HOST, host);
 			editor.putInt(Constants.XMPP_PORT, port);
 			editor.putString(Constants.XMPP_USERNAME, username);
+			//editor.putString(Constants.XMPP_NICKNAME, mNickname);
 			editor.commit();
 			
 			RegistManager.getInstance(prefs).regist(SignupActivity.this);
@@ -312,7 +325,7 @@ public class SignupActivity extends Activity {
 
     				break;
     			default:
-    				sActivity.get().mEmailView.setError("Œ¥÷™¥ÌŒÛ");
+    				sActivity.get().mEmailView.setError("Œ¥÷™¥ÌŒÛ£¨«Î…‘∫Û‘Ÿ ‘");
     				sActivity.get().mAuthTask = null;
     				break;
     				

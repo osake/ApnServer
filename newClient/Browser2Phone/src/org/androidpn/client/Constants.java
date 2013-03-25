@@ -43,6 +43,8 @@ public class Constants {
     public static final String XMPP_PASSWORD = "XMPP_PASSWORD";
     
     public static final String XMPP_EMAIL = "XMPP_EMAIL";
+    
+    public static final String XMPP_NICKNAME = "XMPP_NICKNAME";
 
     // public static final String USER_KEY = "USER_KEY";
 
@@ -79,5 +81,5 @@ public class Constants {
     public static final String ACTION_NOTIFICATION_CLICKED = "org.androidpn.client.NOTIFICATION_CLICKED";
 
     public static final String ACTION_NOTIFICATION_CLEARED = "org.androidpn.client.NOTIFICATION_CLEARED";
-
+    
 }

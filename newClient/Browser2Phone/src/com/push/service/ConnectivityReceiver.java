@@ -17,6 +17,8 @@ package com.push.service;
 
 import org.androidpn.client.LogUtil;
 
+import com.push.network.LoginManager;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -54,7 +56,11 @@ public class ConnectivityReceiver extends BroadcastReceiver {
             Log.d(LOGTAG, "Network State = " + networkInfo.getState());
             if (networkInfo.isConnected()) {
                 Log.i(LOGTAG, "Network connected");
-                notificationService.login();
+                boolean isLogin = notificationService.getSharedPreferences().getBoolean("isLogin", false);
+                if(isLogin)
+                {
+                	notificationService.login();
+                }
             }
         } else {
             Log.e(LOGTAG, "Network unavailable");

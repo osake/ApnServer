@@ -275,6 +275,10 @@ public class LoginActivity extends Activity {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			 catch (Exception e)
+			 {
+				 e.printStackTrace();
+			 }
 			startActivity(intent);
 
 			return true;

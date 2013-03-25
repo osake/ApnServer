@@ -1,17 +1,28 @@
 <resources>
 
-    <string name="app_name">云中锦书</string>
+    <string name="app_name">推推</string>
     <string name="apk_name">Cloud Push</string>
     <string name="login_label_username">帐号</string>
+    <string name="login_label_nickname">昵称</string>
     <string name="login_label_password">密码</string>
     <string name="login_label_signin">登 录</string>
     <string name="login_label_signup">注册</string>
     <string name="login_status_logging_in">登录中…</string>
     <string name="login_status_signing_up">注册中…</string>
     <string name="login_username_hint">Email地址</string>
+    <string name="login_nickname_hint">支持英文字母以及数字</string>
     <string name="login_password_hint">密码</string>
     <string name="repassword_hint">请再输入一次</string>
     <string name="login_register_link">没有帐号？ <a href="#">注册</a></string>
     <string name="notification_settings">设置</string>
-    <string name="hello">欢迎使用云中锦书Beta测试版，请登录您的注册邮箱，点击里面的链接下载浏览器端插件。如有使用上的问题或者发现bug，请发email到cloudpush@yeah.net</string>
+    <string name="notification_logout">注销</string>
+    <string name="hello">欢迎使用推推Beta测试版，\n请登录您的注册邮箱，点击里面的链接下载浏览器插件。如有使用上的问题或者发现bug请发送email到cloudpush@yeah.net。\n 祝您使用愉快！</string>
+    <string name="notification_detail_copy">复制消息</string>
+    <string name="notification_detail_browser">打开浏览器</string>
+    <string name="notification_detail_call">打电话</string>
+    <string name="notification_detail_return">返回</string>
+    <string name="notification_detail_copy_successful">消息内容已经复制到剪贴板</string>
+    <string name="notification_detail_download_fail">图片太大，请打开连接，在浏览器中查看</string>
+    <string name="notification_detail_download">链接中包含图片，正在为您打开，请稍后</string>
+    <string name="notification_detail_url">推送消息包含网页地址，请打开浏览器浏览</string>
 </resources>
