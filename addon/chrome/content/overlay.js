@@ -210,23 +210,6 @@ var docCookies = {
 
 var ApnClipper = {
 		
-		onLinkDDCheck: function(onLink, target){
-			if(onLink){
-				if(target.tagName.toLowerCase() != 'a'){
-                    target = target.parentNode;
-                    if(target.tagName.toLowerCase() != 'a'){
-                        return 0;
-                    }{
-                    	return 1;
-                    }
-                }{
-                	return 1;
-                }
-			}{
-				return 0;
-			}
-		},
-		
 		pushLocate: function() {
 			var login = docCookies.loginCheck();
 			if(login == 1){
@@ -250,12 +233,17 @@ var ApnClipper = {
 				var selection = "";
 				onLink = gContextMenu.onLink;
 		        target = gContextMenu.target;
-		        var flag = ApnClipper.onLinkDDCheck(onLink, target);
-		        if(flag == 1){
-		        	uri = target.href;
-		            selection = target.title || target.text || target.href;
-		        }
+		        if(target.tagName.toLowerCase() != 'a'){
+	                target = target.parentNode;
+	                if(target.tagName.toLowerCase() != 'a'){
+	                    return;
+	                }
+	            }
+		        
+		        uri = ApnClipper.escapeHTML(target.href);
+		        selection = ApnClipper.escapeHTML(target.title) || ApnClipper.escapeHTML(target.text) || ApnClipper.escapeHTML(target.href);
 				MozCnApn.send_request2(title, selection, uri, username);
+				
 			}else{
 				MozCnApn.show_panel();
 			}
@@ -272,5 +260,9 @@ var ApnClipper = {
 			}else{
 				MozCnApn.show_panel();
 			}
+		},
+		
+		escapeHTML: function(str){
+		    return str.replace(/[&"<>]/g, function (m) ({ "&": "&amp;", '"': "&quot", "<": "&lt;", ">": "&gt;" })[m]);
 		}
 };
