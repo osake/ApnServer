@@ -47,7 +47,7 @@ var MozCnApn = {
 			var content = 'email=' + email + '&password=' + escape(password);
 			var url = "http://42.96.141.125:8080/login.do?action=send";
 			var request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
-			var stringsBundle = document.getElementById("string-bundle");
+			var stringsBundle = document.getElementById("string-bundle-apn");
 			request.onload = function(aEvent) {
 				var array = this.responseText.split("/");
 				var returnFlag = array[0];
@@ -127,7 +127,7 @@ var MozCnApn = {
 		handle_event:function(){
 			var login = docCookies.loginCheck();
 			if(login == 1){
-				var stringsBundle = document.getElementById("string-bundle");
+				var stringsBundle = document.getElementById("string-bundle-apn");
 				var title = stringsBundle.getString('apn_send_url_title');
 				var username = docCookies.getItem("apn_userId");
 				var uri = gBrowser.contentDocument.location;
@@ -213,7 +213,7 @@ var ApnClipper = {
 		pushLocate: function() {
 			var login = docCookies.loginCheck();
 			if(login == 1){
-				var stringsBundle = document.getElementById("string-bundle");
+				var stringsBundle = document.getElementById("string-bundle-apn");
 				var title = stringsBundle.getString('apn_send_url_title');
 				var username = docCookies.getItem("apn_userId");
 				var uri = gBrowser.contentDocument.location;
@@ -226,7 +226,7 @@ var ApnClipper = {
 		pushUrl: function() {
 			var login = docCookies.loginCheck();
 			if(login == 1){
-				var stringsBundle = document.getElementById("string-bundle");
+				var stringsBundle = document.getElementById("string-bundle-apn");
 				var title = stringsBundle.getString('apn_send_url_title');
 				var username = docCookies.getItem("apn_userId");
 				var uri = "";
@@ -252,7 +252,7 @@ var ApnClipper = {
 		pushSelection: function() {
 			var login = docCookies.loginCheck();
 			if(login == 1){
-				var stringsBundle = document.getElementById("string-bundle");
+				var stringsBundle = document.getElementById("string-bundle-apn");
 				var title = stringsBundle.getString('apn_send_url_title');
 				var username = docCookies.getItem("apn_userId");
 				var selection = gBrowser.contentDocument.getSelection();
