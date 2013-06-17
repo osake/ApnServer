@@ -4,6 +4,7 @@
 var username;
 var tablink = "";
 var message = "";
+var title = "";
 var fromMenu = false;
 chrome.browserAction.onClicked.addListener(push)
 function getCookies(domain, name, callback) {
@@ -39,6 +40,7 @@ function push()
           if(!fromMenu)
           {
              tablink = tab.url;
+             title = tab.title;
           }
           else
           {
@@ -58,7 +60,6 @@ function sendReq()
    }
    else
    {
-      var title = "\u63A8\u63A8\u7684\u65B0\u6D88\u606F";
       var req = new XMLHttpRequest();
       var url= "http://42.96.141.125:8080/notificationFromWeb.do?action=send";
       req.open("POST",url,true);
@@ -67,6 +68,10 @@ function sendReq()
       //tablink = tablink.replace("&","&amp;");
       //alert(tablink);
       tablink = encodeURIComponent(tablink);
+      if(message == "")
+      {
+         message = tablink;
+      }
       var content = 'title=' + title + '&message=' + message + '&uri=' + tablink + '&username=' + username;
       req.send(content);
    }
@@ -80,7 +85,6 @@ function onClickHandler(info, tab)
    }
    else if(info.menuItemId == "contextlink")
    {
-      message = info.linkUrl;
       tablink = info.linkUrl;
    }
    else if(info.menuItemId == "contextimage")
@@ -90,7 +94,6 @@ function onClickHandler(info, tab)
    else
    {
       tablink = info.pageUrl;
-      message = "";
    }
    fromMenu = true;
    push();   
