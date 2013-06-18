@@ -231,7 +231,15 @@ var ApnClipper = {
 				var username = docCookies.getItem("apn_userId");
 				var uri = "";
 				var selection = "";
+				onImage = gContextMenu.onImage;
 				onLink = gContextMenu.onLink;
+				if(onImage){
+		        	uri =  ApnClipper.escapeHTML(gContextMenu.imageURL);
+		        	if(!onLink){
+		        		MozCnApn.send_request2(title, "", uri, username);
+		        		return;
+		        	}
+		        }
 		        target = gContextMenu.target;
 		        if(target.tagName.toLowerCase() != 'a'){
 	                target = target.parentNode;
@@ -239,8 +247,11 @@ var ApnClipper = {
 	                    return;
 	                }
 	            }
-		        
-		        uri = ApnClipper.escapeHTML(target.href);
+		        if(onImage){
+		        	uri =  ApnClipper.escapeHTML(gContextMenu.imageURL);
+		        }else{
+			        uri = ApnClipper.escapeHTML(target.href);
+		        }
 		        selection = ApnClipper.escapeHTML(target.title) || ApnClipper.escapeHTML(target.text) || ApnClipper.escapeHTML(target.href);
 				MozCnApn.send_request2(title, selection, uri, username);
 				
