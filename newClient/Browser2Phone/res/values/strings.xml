@@ -16,7 +16,7 @@
     <string name="login_register_link">没有帐号？ <a href="#">注册</a></string>
     <string name="notification_settings">设置</string>
     <string name="notification_logout">注销</string>
-    <string name="hello">欢迎使用推推Beta测试版，\n请登录您的注册邮箱，点击里面的链接下载浏览器插件。如有使用上的问题或者发现bug请发送email到cloudpush@yeah.net。\n 祝您使用愉快！</string>
+    <string name="hello">欢迎使用推推，\n请在电脑上登录您的注册邮箱，点击里面的链接下载浏览器插件。如有使用上的问题或者发现bug请发送email到cloudpush@yeah.net。\n 祝您使用愉快！</string>
     <string name="notification_detail_copy">复制消息</string>
     <string name="notification_detail_browser">打开浏览器</string>
     <string name="notification_detail_call">打电话</string>
@@ -25,4 +25,13 @@
     <string name="notification_detail_download_fail">图片太大，请打开连接，在浏览器中查看</string>
     <string name="notification_detail_download">链接中包含图片，正在为您打开，请稍后</string>
     <string name="notification_detail_url">推送消息包含网页地址，请打开浏览器浏览</string>
+    <string name="menu_share">分享</string>
+    <string name="main_page">推推</string>
+    <string name="history_page">历史</string>
+    <string name="setting_page">设置</string>
+    <string name="empty_history">您还没有历史消息，请从浏览器推送第一条吧！</string>
+    <string name="quite_alert">退出后将收不到推送消息，确定吗？</string>
+    <string name="quite_title">提示</string>
+    <string name="quite_positive">确定</string>
+    <string name="quite_negative">取消</string>
 </resources>

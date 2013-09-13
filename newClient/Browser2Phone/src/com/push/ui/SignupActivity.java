@@ -21,7 +21,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
@@ -72,17 +71,16 @@ public class SignupActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_signup);
-
+		
 		prefs = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME,MODE_PRIVATE);
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
-		mEmailView.setText(mEmail);
-
 		//mNicknameView = (EditText) findViewById(R.id.nickname);
 		
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mRePasswordView = (EditText) findViewById(R.id.repassword);
+		
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
@@ -108,6 +106,17 @@ public class SignupActivity extends Activity {
 					}
 				});
 		rHandler = new RegisterHandler(this);
+		Bundle bundle = this.getIntent().getBundleExtra(Constants.LOGIN_BUNDLE);
+		if(bundle != null)
+		{
+			String preEmail = (String)bundle.get(Constants.XMPP_EMAIL);
+			String prePassword =(String)bundle.get(Constants.XMPP_PASSWORD);
+			if(preEmail != null && prePassword != null)
+			{
+				mEmailView.setText(preEmail);
+				mPasswordView.setText(prePassword);
+			}
+		}
 	}
 
 	@Override
@@ -145,7 +154,7 @@ public class SignupActivity extends Activity {
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;
 			cancel = true;
-		} else if (mPassword.length() < 4) {
+		} else if (mPassword.length() < 6) {
 			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
 			cancel = true;
@@ -311,6 +320,7 @@ public class SignupActivity extends Activity {
     				SharedPreferences prefs = sActivity.get().getSharedPreferences(Constants.SHARED_PREFERENCE_NAME,MODE_PRIVATE);
     				Editor editor = prefs.edit();
     				editor.putBoolean("isRegisted", true);
+    				editor.putBoolean("showWelcomeMsg", true);
     				editor.commit();
     				
     				Intent intent  = new Intent();

@@ -17,6 +17,11 @@ package org.androidpn.client;
 
 import java.util.Random;
 
+import org.androidpn.client.Constants;
+import org.androidpn.client.LogUtil;
+
+import com.push.ui.NotificationDetailsActivity;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;

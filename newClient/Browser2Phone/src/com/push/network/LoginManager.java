@@ -17,41 +17,47 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
-public class LoginManager {
+public class LoginManager
+{
 	public static LoginManager loginManager;
 
 	private static final String LOGTAG = LogUtil.makeLogTag(LoginManager.class);
 	private XMPPConnection connection;
 	private NotificationService notification;
 
-	private LoginManager(NotificationService notification) 
+	private LoginManager(NotificationService notification)
 	{
 		this.notification = notification;
 	}
 
-	public static LoginManager getInstance(NotificationService notification) {
-		if (loginManager == null) {
+	public static LoginManager getInstance(NotificationService notification)
+	{
+		if (loginManager == null)
+		{
 			loginManager = new LoginManager(notification);
 		}
 		return loginManager;
 	}
 
-	public void login() {
+	public synchronized void login()
+	{
 		SharedPreferences prefs = notification.getSharedPreferences();
-		
+
 		String username = prefs.getString(Constants.XMPP_USERNAME, "");
 		String password = prefs.getString(Constants.XMPP_PASSWORD, "");
 		boolean isAuthenticated = isAuthenticated();
 		Log.i(LOGTAG, "LoginTask.run()...");
-		
-		
-		if (!isAuthenticated) {
-			connection = ConnectionManager.getInstance(notification.getSharedPreferences()).getConnection();
+
+		if (!isAuthenticated)
+		{
+			connection = ConnectionManager.getInstance(
+					notification.getSharedPreferences()).getConnection();
 			Log.d(LOGTAG, "username=" + username);
 			Log.d(LOGTAG, "password=" + password);
 
-			try {
-				if(connection == null || !connection.isConnected())
+			try
+			{
+				if (connection == null || !connection.isConnected())
 				{
 					connection.connect();
 				}
@@ -59,20 +65,28 @@ public class LoginManager {
 				prefs.edit().putBoolean("isLogin", true);
 				prefs.edit().commit();
 				Log.d(LOGTAG, "Loggedn in successfully");
-				
-				if(!isAuthenticated)
+
+				if (!isAuthenticated)
 				{
-					connection.addConnectionListener(new PersistentConnectionListener(notification));
-					
+					connection
+							.addConnectionListener(new PersistentConnectionListener(
+									notification));
+
 					// packet filter
-					PacketListener packetListener = new NotificationPacketListener(this.notification);
+					PacketListener packetListener = new NotificationPacketListener(
+							this.notification);
 					// packet listener
-					PacketFilter packetFilter = new PacketTypeFilter(NotificationIQ.class);
-					ConnectionManager.getInstance(notification.getSharedPreferences()).getConnection().addPacketListener(packetListener, packetFilter);
+					PacketFilter packetFilter = new PacketTypeFilter(
+							NotificationIQ.class);
+					ConnectionManager
+							.getInstance(notification.getSharedPreferences())
+							.getConnection()
+							.addPacketListener(packetListener, packetFilter);
 
 				}
-				
-			} catch (XMPPException e) {
+
+			} catch (XMPPException e)
+			{
 				Log.e(LOGTAG, "LoginTask.run()... xmpp error");
 				Log.e(LOGTAG,
 						"Failed to login to xmpp server. Caused by: "
@@ -82,13 +96,18 @@ public class LoginManager {
 				Editor editor = prefs.edit();
 				editor.putBoolean("isLogin", false);
 				editor.commit();
-				if (errorMessage != null
-						&& errorMessage.contains(INVALID_CREDENTIALS_ERROR_CODE)) {
+				if (errorMessage != null && errorMessage.contains(INVALID_CREDENTIALS_ERROR_CODE))
+				{
 					return;
 				}
-				new PersistentConnectionManager(notification).start();
+				if (!PersistentConnectionManager.isRunning)
+				{
+					new PersistentConnectionManager(notification).start();
+				}
 
-			} catch (Exception e) {
+			} 
+			catch (Exception e)
+			{
 				Log.e(LOGTAG, "LoginTask.run()... other error");
 				Log.e(LOGTAG,
 						"Failed to login to xmpp server. Caused by: "
@@ -97,22 +116,27 @@ public class LoginManager {
 				editor.putBoolean("isLogin", false);
 				editor.commit();
 				connection.disconnect();
-				new PersistentConnectionManager(notification).start();
+				if (!PersistentConnectionManager.isRunning)
+				{
+					new PersistentConnectionManager(notification).start();
+				}
 			}
 
-		} else {
+		} else
+		{
 			Editor editor = prefs.edit();
 			editor.putBoolean("isLogin", true);
 			editor.commit();
 			Log.i(LOGTAG, "Logged in already");
-			//xmppManager.runTask();
+			// xmppManager.runTask();
 		}
 
 	}
-	
-    public boolean isAuthenticated() {
-        return connection != null && connection.isConnected()
-                && connection.isAuthenticated();
-    }
+
+	public boolean isAuthenticated()
+	{
+		return connection != null && connection.isConnected()
+				&& connection.isAuthenticated();
+	}
 
 }

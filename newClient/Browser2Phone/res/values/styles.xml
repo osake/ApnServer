@@ -28,5 +28,10 @@
 		<item name="android:textColor">#444</item>
 		<item name="android:textSize">14sp</item>
 	</style>
+	
+	<style name="CustomWindowTitleTheme" parent="@android:style/Theme.Light"> 
+	    <item name="android:windowTitleSize">45dp</item> 
+	    <item name="android:textColorPrimaryInverse">@android:color/primary_text_light</item> 
+	</style>
 
 </resources>

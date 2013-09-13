@@ -3,27 +3,68 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
-    <TextView
-	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content"
-	    android:layout_weight="1.0"
-	    android:gravity="center_horizontal"
-	    android:text="@string/hello"
-	    android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/btn_settings"
+<!--  
+   <android.support.v4.view.ViewPager
+        android:id="@+id/vPager"
         android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1.0"
+        android:background="#000000"
+        android:flipInterval="30"
+        android:layout_height="0dip"
+        android:persistentDrawingCache="animation" />
+   
+	<ImageView
+        android:id="@+id/cursor"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/notification_settings" />
-    
-  <!--  <Button
-        android:id="@+id/btn_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/notification_logout" />-->
-    
+        android:scaleType="matrix"
+        android:src="@drawable/cursor" />
+             
+	<LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="50.0dip"
+        android:background="#FFFFFF" >
+
+        <TextView
+            android:id="@+id/main_page"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="@string/main_page"
+            android:textColor="#000000"
+            android:textSize="22.0dip" />
+
+        <TextView
+            android:id="@+id/history_page"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="@string/history_page"
+            android:textColor="#000000"
+            android:textSize="22.0dip" />
+
+        <TextView
+            android:id="@+id/setting_page"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="@string/setting_page"
+            android:textColor="#000000"
+            android:textSize="22.0dip" />
+    </LinearLayout>
+    -->
+        <TextView
+            android:id="@+id/greetings"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="@string/empty_history"
+            android:textColor="#000000"
+            android:textSize="22.0dip" />
 </LinearLayout>

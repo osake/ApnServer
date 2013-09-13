@@ -2,7 +2,6 @@ package com.push.ui;
 
 import java.io.IOException;
 import java.util.Properties;
-import java.util.regex.Pattern;
 
 import org.androidpn.client.Constants;
 import org.androidpn.client.LogUtil;
@@ -17,6 +16,8 @@ import org.apache.http.util.EntityUtils;
 
 import com.push.browser2phone.R;
 import com.push.datatype.GetUidReq;
+import com.push.datatype.GetUidReq.getUidReq;
+import com.push.datatype.GetUidReq.getUidReq.Builder;
 import com.push.network.protocol.GetUidResponse;
 import com.push.util.XMPPUtil;
 
@@ -35,6 +36,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -66,6 +68,7 @@ public class LoginActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 	private SharedPreferences prefs = null;
+	private String status = "0";
 	
     private static final String LOGTAG = LogUtil.makeLogTag(LoginActivity.class);
     
@@ -85,8 +88,14 @@ public class LoginActivity extends Activity {
 		}
 		instance = this;
 		super.onCreate(savedInstanceState);
-
+		final boolean customTitleSupported = requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_login);
+		if (customTitleSupported) 
+		{
+			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title);
+		}
+//		ActionBar actionBar = this.getActionBar();
+//		actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP, ActionBar.DISPLAY_HOME_AS_UP);
 		
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
@@ -128,11 +137,23 @@ public class LoginActivity extends Activity {
 						startActivity(intent);
 					}
 				});
+		
+		findViewById(R.id.sign_titleButton).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Intent intent  = new Intent();
+						intent.setClass(LoginActivity.this, SignupActivity.class);
+						startActivity(intent);
+					}
+				});
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
+//		MenuItem add = menu.add(0, 1, 0, "Save");
+//		add.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM); 
 		getMenuInflater().inflate(R.menu.activity_login, menu);
 		return true;
 	}
@@ -163,7 +184,7 @@ public class LoginActivity extends Activity {
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;
 			cancel = true;
-		} else if (mPassword.length() < 4) {
+		} else if (mPassword.length() < 6) {
 			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
 			cancel = true;
@@ -254,7 +275,7 @@ public class LoginActivity extends Activity {
 			try {
 				GetUidResponse resp = getUidFromServer(mEmail, mPassword, host);
 				String uid = resp.getUid();
-				String status = resp.getStatus();
+				status = resp.getStatus();
 				if(status.equals("0"))
 				{
 					Editor editor = prefs.edit();
@@ -265,6 +286,22 @@ public class LoginActivity extends Activity {
 					editor.putString(Constants.XMPP_USERNAME, uid);
 					editor.putBoolean("isRegisted", true);
 					editor.commit();
+				}
+				else if(status.equals("-1"))
+				{
+					Bundle bundle = new Bundle();
+					bundle.putString(Constants.XMPP_EMAIL, mEmail);
+					bundle.putString(Constants.XMPP_PASSWORD, mPassword);
+					Intent signUpIntent  = new Intent();
+					signUpIntent.putExtra(Constants.LOGIN_BUNDLE, bundle);
+					signUpIntent.setClass(LoginActivity.this, SignupActivity.class);
+					startActivity(signUpIntent);
+					LoginActivity.this.finish();
+					return false;
+				}
+				else if(status.equals("-3"))
+				{
+					return false;
 				}
 				else
 				{
@@ -292,9 +329,11 @@ public class LoginActivity extends Activity {
 			if (success) {
 				finish();
 			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
+				if(!status.equals("-1"))
+				{
+					mPasswordView.setError(getString(R.string.error_incorrect_password));
+					mPasswordView.requestFocus();
+				}
 			}
 		}
 
@@ -345,23 +384,6 @@ public class LoginActivity extends Activity {
 //		}
 //	}
 	
-	public class UserRegistTask {
-//		public void regist()
-//		{
-//			Intent intent  = new Intent();
-//			intent.setClass(LoginActivity.this, MainActivity.class);
-//			String username = XMPPUtil.newRandomUUID();
-//			
-//			Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME,MODE_PRIVATE).edit();
-//			editor.putString("email", mEmail);
-//			editor.putString("password", mPassword);
-//			editor.putString("username", username);
-//			editor.commit();
-//			
-//			
-//			startActivity(intent);
-//		}
-	}
     
     private Properties loadProperties() {
         Properties props = new Properties();
@@ -380,7 +402,7 @@ public class LoginActivity extends Activity {
 	{
 		HttpClient client = new DefaultHttpClient();
 		HttpPost method = new HttpPost("http://" + host + ":8080/GetUidService");
-		GetUidReq.getUidReq.Builder builder = GetUidReq.getUidReq.newBuilder();
+		Builder builder = getUidReq.newBuilder();
 		builder.setEmail(email);
 		builder.setPassword(password);
 		HttpEntity entity = new ByteArrayEntity(builder.build().toByteArray());

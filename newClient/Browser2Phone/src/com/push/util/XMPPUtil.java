@@ -1,5 +1,6 @@
 package com.push.util;
 
+import android.annotation.SuppressLint;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -33,6 +34,32 @@ public class XMPPUtil {
 	{
 		String regex = "^[a-zA-Z0-9_]+$";
 		return Pattern.matches(regex, str);
+	}
+	
+	public static boolean isImageURL(String url)
+	{
+		if(url == null)
+		{
+			return false;
+		}
+		url = url.toLowerCase();
+		if(url.endsWith(".bmp") || url.endsWith(".jpeg") || url.endsWith(".jpg") || url.endsWith(".gif") || url.endsWith(".png") || url.endsWith(".exif") || url.endsWith(".tiff"))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isVideoURL(String url)
+	{
+		url = url.toLowerCase();
+		
+		if (url.contains("youku"))
+		{
+			return true;
+		}
+		
+		return false;
 	}
 
 }

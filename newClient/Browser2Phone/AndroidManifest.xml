@@ -1,39 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.push.browser2phone"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionCode="3"
+    android:versionName="2.1" >
 
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="16" />
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.Light" >
         <activity
             android:name="com.push.ui.LoginActivity"
             android:label="@string/app_name"
+            android:theme="@style/CustomWindowTitleTheme"
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                
             </intent-filter>
         </activity>
         <activity
             android:name="com.push.ui.MainActivity"
+            android:theme="@style/AppTheme"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="org.androidpn.client.NotificationDetailsActivity"
-            android:label="Notification Details" >
+            android:name="com.push.ui.NotificationDetailsActivity"
+            android:theme="@style/AppTheme"
+            android:label="推送详情" >
         </activity>
         <activity
             android:name="com.push.ui.NotificationSettingsActivity"
-            android:label="Notification Settings" >
+            android:label="推送设置" >
         </activity>
 
         <service
@@ -48,15 +59,16 @@
         <activity
             android:name="com.push.ui.SignupActivity"
             android:label="@string/title_activity_signup"
+            android:theme="@style/CustomWindowTitleTheme"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
+        
+        <receiver android:name="com.push.service.BootBroadcastReceiver">
+  			<intent-filter>
+    			<action android:name="android.intent.action.BOOT_COMPLETED" />
+   			</intent-filter>
+  		</receiver>
+  		
     </application>
-
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>

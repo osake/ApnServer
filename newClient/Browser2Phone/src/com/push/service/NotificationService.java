@@ -22,13 +22,9 @@ import java.util.concurrent.Future;
 
 import org.androidpn.client.Constants;
 import org.androidpn.client.LogUtil;
-import org.androidpn.client.NotificationIQ;
-import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.filter.PacketFilter;
-import org.jivesoftware.smack.filter.PacketTypeFilter;
 
-import com.push.listener.NotificationPacketListener;
+import com.push.browser2phone.R;
 import com.push.listener.PhoneStateChangeListener;
 import com.push.network.ConnectionManager;
 import com.push.network.LoginManager;
@@ -51,9 +47,13 @@ import android.util.Log;
  * AndroidManifest.xml.
  * 
  */
-public class NotificationService extends Service {
+public class NotificationService extends Service
+{
+	
+	public static boolean teminatedFlag = true;
 
-	private static final String LOGTAG = LogUtil.makeLogTag(NotificationService.class);
+	private static final String LOGTAG = LogUtil
+			.makeLogTag(NotificationService.class);
 
 	public static final String SERVICE_NAME = "com.push.service.NotificationService";
 
@@ -78,10 +78,11 @@ public class NotificationService extends Service {
 	private SharedPreferences sharedPrefs;
 
 	private String deviceId;
-	
-	private ConnectionManager connectionManager;
 
-	public NotificationService() {
+	private ConnectionManager connectionManager;
+	
+	public NotificationService()
+	{
 		notificationReceiver = new NotificationReceiver();
 		connectivityReceiver = new ConnectivityReceiver(this);
 		phoneStateListener = new PhoneStateChangeListener(this);
@@ -91,7 +92,8 @@ public class NotificationService extends Service {
 	}
 
 	@Override
-	public void onCreate() {
+	public void onCreate()
+	{
 		Log.d(LOGTAG, "onCreate()...");
 		telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		// wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -110,11 +112,14 @@ public class NotificationService extends Service {
 
 		// If running on an emulator
 		if (deviceId == null || deviceId.trim().length() == 0
-				|| deviceId.matches("0+")) {
-			if (sharedPrefs.contains("EMULATOR_DEVICE_ID")) {
+				|| deviceId.matches("0+"))
+		{
+			if (sharedPrefs.contains("EMULATOR_DEVICE_ID"))
+			{
 				deviceId = sharedPrefs.getString(Constants.EMULATOR_DEVICE_ID,
 						"");
-			} else {
+			} else
+			{
 				deviceId = (new StringBuilder("EMU")).append(
 						(new Random(System.currentTimeMillis())).nextLong())
 						.toString();
@@ -124,85 +129,91 @@ public class NotificationService extends Service {
 		}
 		Log.d(LOGTAG, "deviceId=" + deviceId);
 
-		taskSubmitter.submit(new Runnable() {
-			public void run() {
+		taskSubmitter.submit(new Runnable()
+		{
+			public void run()
+			{
 				NotificationService.this.start();
 			}
 		});
 	}
 
 	@Override
-	public void onStart(Intent intent, int startId) 
+	public void onStart(Intent intent, int startId)
 	{
 		connectionManager = ConnectionManager.getInstance(this.sharedPrefs);
 		this.login();
-//		
-//		taskSubmitter.submit(new Runnable() {
-//			public void run() {
-//				LoginManager loginManager = LoginManager.getInstance();
-//				if(!loginManager.isAuthenticated())
-//				{
-//					LoginManager.getInstance().login(true);
-//					// packet filter
-//					PacketListener packetListener = new NotificationPacketListener(NotificationService.this);
-//					// packet listener
-//					PacketFilter packetFilter = new PacketTypeFilter(NotificationIQ.class);
-//					connectionManager.getConnection().addPacketListener(packetListener, packetFilter);
-//				}
-//			}
-//		});
-
 		Log.d(LOGTAG, "onStart()...");
 	}
 
 	@Override
-	public void onDestroy() {
+	public void onDestroy()
+	{
 		Log.d(LOGTAG, "onDestroy()...");
-		stop();
+		if(teminatedFlag)
+		{
+			stop();
+		}
+		else
+		{
+			ServiceManager serviceManager = new ServiceManager(this);
+			serviceManager.setNotificationIcon(R.drawable.notification);
+			serviceManager.startService();
+		}
 	}
 
 	@Override
-	public IBinder onBind(Intent intent) {
+	public IBinder onBind(Intent intent)
+	{
 		Log.d(LOGTAG, "onBind()...");
 		return null;
 	}
 
 	@Override
-	public void onRebind(Intent intent) {
+	public void onRebind(Intent intent)
+	{
 		Log.d(LOGTAG, "onRebind()...");
 	}
 
 	@Override
-	public boolean onUnbind(Intent intent) {
+	public boolean onUnbind(Intent intent)
+	{
 		Log.d(LOGTAG, "onUnbind()...");
 		return true;
 	}
 
-	public static Intent getIntent() {
+	public static Intent getIntent()
+	{
 		return new Intent(SERVICE_NAME);
 	}
 
-	public ExecutorService getExecutorService() {
+	public ExecutorService getExecutorService()
+	{
 		return executorService;
 	}
 
-	public TaskSubmitter getTaskSubmitter() {
+	public TaskSubmitter getTaskSubmitter()
+	{
 		return taskSubmitter;
 	}
 
-	public TaskTracker getTaskTracker() {
+	public TaskTracker getTaskTracker()
+	{
 		return taskTracker;
 	}
 
-	public SharedPreferences getSharedPreferences() {
+	public SharedPreferences getSharedPreferences()
+	{
 		return sharedPrefs;
 	}
 
-	public String getDeviceId() {
+	public String getDeviceId()
+	{
 		return deviceId;
 	}
 
-	private void registerNotificationReceiver() {
+	private void registerNotificationReceiver()
+	{
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.ACTION_SHOW_NOTIFICATION);
 		filter.addAction(Constants.ACTION_NOTIFICATION_CLICKED);
@@ -210,11 +221,13 @@ public class NotificationService extends Service {
 		registerReceiver(notificationReceiver, filter);
 	}
 
-	private void unregisterNotificationReceiver() {
+	private void unregisterNotificationReceiver()
+	{
 		unregisterReceiver(notificationReceiver);
 	}
 
-	private void registerConnectivityReceiver() {
+	private void registerConnectivityReceiver()
+	{
 		Log.d(LOGTAG, "registerConnectivityReceiver()...");
 		telephonyManager.listen(phoneStateListener,
 				PhoneStateListener.LISTEN_DATA_CONNECTION_STATE);
@@ -224,20 +237,23 @@ public class NotificationService extends Service {
 		registerReceiver(connectivityReceiver, filter);
 	}
 
-	private void unregisterConnectivityReceiver() {
+	private void unregisterConnectivityReceiver()
+	{
 		Log.d(LOGTAG, "unregisterConnectivityReceiver()...");
 		telephonyManager.listen(phoneStateListener,
 				PhoneStateListener.LISTEN_NONE);
 		unregisterReceiver(connectivityReceiver);
 	}
 
-	private void start() {
+	private void start()
+	{
 		Log.d(LOGTAG, "start()...");
 		registerNotificationReceiver();
 		registerConnectivityReceiver();
 	}
 
-	private void stop() {
+	private void stop()
+	{
 		Log.d(LOGTAG, "stop()...");
 		unregisterNotificationReceiver();
 		unregisterConnectivityReceiver();
@@ -247,26 +263,30 @@ public class NotificationService extends Service {
 	/**
 	 * Class for summiting a new runnable task.
 	 */
-	public class TaskSubmitter {
+	public class TaskSubmitter
+	{
 
 		final NotificationService notificationService;
 
-		public TaskSubmitter(NotificationService notificationService) {
+		public TaskSubmitter(NotificationService notificationService)
+		{
 			this.notificationService = notificationService;
 		}
 
-		public Future<?> submit(Runnable task) {
+		public Future<?> submit(Runnable task)
+		{
 			Future<?> result = null;
 			if (!notificationService.getExecutorService().isTerminated()
 					&& !notificationService.getExecutorService().isShutdown()
-					&& task != null) {
+					&& task != null)
+			{
 				result = notificationService.getExecutorService().submit(task);
 			}
 			return result;
 		}
 
 	}
-	
+
 	public void login()
 	{
 		taskSubmitter.submit(new Runnable()
@@ -277,46 +297,54 @@ public class NotificationService extends Service {
 			}
 		});
 	}
-	
+
 	public void disConnect()
 	{
-		taskSubmitter.submit(new Runnable() {
+		taskSubmitter.submit(new Runnable()
+		{
 
-            public void run() {
-            	XMPPConnection connection = connectionManager.getConnection();
-            	if(connection != null && connection.isConnected())
-            	{
-            		connection.disconnect();
-            	}
-            	//LoginManager.getInstance(NotificationService.this).login();
-            }
+			public void run()
+			{
+				XMPPConnection connection = connectionManager.getConnection();
+				if (connection != null && connection.isConnected())
+				{
+					connection.disconnect();
+				}
+				// LoginManager.getInstance(NotificationService.this).login();
+			}
 
-        });
+		});
 	}
-	
+
 	/**
 	 * Class for monitoring the running task count.
 	 */
-	public class TaskTracker {
+	public class TaskTracker
+	{
 
 		final NotificationService notificationService;
 
 		public int count;
 
-		public TaskTracker(NotificationService notificationService) {
+		public TaskTracker(NotificationService notificationService)
+		{
 			this.notificationService = notificationService;
 			this.count = 0;
 		}
 
-		public void increase() {
-			synchronized (notificationService.getTaskTracker()) {
+		public void increase()
+		{
+			synchronized (notificationService.getTaskTracker())
+			{
 				notificationService.getTaskTracker().count++;
 				Log.d(LOGTAG, "Incremented task count to " + count);
 			}
 		}
 
-		public void decrease() {
-			synchronized (notificationService.getTaskTracker()) {
+		public void decrease()
+		{
+			synchronized (notificationService.getTaskTracker())
+			{
 				notificationService.getTaskTracker().count--;
 				Log.d(LOGTAG, "Decremented task count to " + count);
 			}
