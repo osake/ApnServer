@@ -32,6 +32,17 @@ public class NotificationFromWebController extends MultiActionController {
         String apiKey = Config.getString("apiKey", "");
         logger.debug("apiKey=" + apiKey);
 
+        Runnable run = new Runnable()
+        {
+
+			public void run()
+			{
+				
+			}
+        	
+        };
+        Thread t = new Thread(run);
+        t.start();
 
         notificationManager.sendNotifcationToUser(apiKey, username, title,
                     message, uri);

@@ -17,6 +17,7 @@
  */
 package org.androidpn.server.xmpp.net;
 
+import java.net.Socket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.dom4j.io.XMPPPacketReader;
 import org.jivesoftware.openfire.net.MXParser;
 import org.jivesoftware.openfire.nio.XMLLightweightParser;
@@ -92,6 +94,7 @@ public class XmppIoHandler implements IoHandler {
         session.setAttribute(CONNECTION, connection);
         session.setAttribute(STANZA_HANDLER, new StanzaHandler(serverName,
                 connection));
+        ((SocketSessionConfig)session.getConfig()).setSoLinger(0);
     }
 
     /**

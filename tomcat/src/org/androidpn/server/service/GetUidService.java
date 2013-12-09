@@ -45,9 +45,14 @@ public class GetUidService extends HttpServlet
 			builder.setUid(user.getUsername());
 			
 		}
-		else
+		else if(user == null)
 		{
 			builder.setStatus("-1");
+			builder.setUid("");
+		}
+		else
+		{
+			builder.setStatus("-2");
 			builder.setUid("");
 		}
 		
