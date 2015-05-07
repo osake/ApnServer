@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "\u63A8\u63A8\u52A9\u624B",
   "description": "\u63A8\u63A8Chrome\u52A9\u624B\uFF0C\u8BF7\u4E0B\u8F7D\u63A8\u63A8\u624B\u673A\u7248\u5E76\u6CE8\u518C\u540E\u4F7F\u7528",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "permissions": [ "cookies", "tabs", "http://*/*", "https://*/*","contextMenus" ],
   "browser_action": {
     "default_icon": "icon.png"
