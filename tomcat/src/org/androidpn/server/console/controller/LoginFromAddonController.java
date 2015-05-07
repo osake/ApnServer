@@ -44,8 +44,9 @@ public class LoginFromAddonController extends MultiActionController {
         
         if (results.startsWith("sucess"))
         {
-          this.logger.debug("adding cookie-----");
-          Cookie cookie = new Cookie("apn_userId", user.getUsername());
+		  String userName = user.getUsername();
+          this.logger.debug("adding cookie-----" + "the user name is" + userName);
+          Cookie cookie = new Cookie("apn_userId", userName);
           cookie.setPath("/");
           cookie.setMaxAge(31536000);
           response.addCookie(cookie);
